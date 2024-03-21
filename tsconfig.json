@@ -1,0 +1,34 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es2021",
+    "lib": [
+      "es2021",
+      "dom"
+    ],
+    "module": "commonjs",
+    "resolveJsonModule": true,
+
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "noImplicitOverride": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "inlineSources": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "engines/*/bin/**/*",
+    "engines/*/lib/**/*",
+    "packages/*/bin/**/*",
+    "packages/*/lib/**/*",
+    "packages/*/benchmarks/**/*"
+  ],
+  "exclude": [
+    "**/node_modules"
+  ]
+}
