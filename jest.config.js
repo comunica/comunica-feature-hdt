@@ -1,23 +1,21 @@
 module.exports = {
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.ts$': [ 'ts-jest', {
+      isolatedModules: true,
+    }],
   },
   testRegex: '/test/.*-test.ts$',
   moduleFileExtensions: [
     'ts',
     'js',
   ],
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
   setupFilesAfterEnv: [ './setup-jest.js' ],
   collectCoverage: true,
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '/mocks/',
     'index.js',
+    '/packages/actor-query-source-identify-hdt/test/MockedHdtDocument.ts',
   ],
   testEnvironment: 'node',
   coverageThreshold: {
