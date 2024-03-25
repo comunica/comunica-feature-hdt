@@ -1,6 +1,6 @@
 {
   "name": "@comunica/actor-query-source-identify-hdt",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A hdt query-source-identify actor",
   "lsd:module": true,
   "license": "MIT",

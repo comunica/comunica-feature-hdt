@@ -123,7 +123,7 @@
     "@comunica/actor-query-result-serialize-stats": "^3.0.1",
     "@comunica/actor-query-result-serialize-table": "^3.0.1",
     "@comunica/actor-query-result-serialize-tree": "^3.0.1",
-    "@comunica/actor-query-source-identify-hdt": "^3.0.0",
+    "@comunica/actor-query-source-identify-hdt": "^3.0.1",
     "@comunica/actor-query-source-identify-hypermedia": "^3.0.1",
     "@comunica/actor-query-source-identify-hypermedia-none": "^3.0.1",
     "@comunica/actor-query-source-identify-hypermedia-qpf": "^3.0.1",
