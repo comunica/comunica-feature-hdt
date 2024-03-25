@@ -24,7 +24,11 @@ $ npm install -g @comunica/query-sparql-hdt
 
 ## Usage
 
-TODO
+Show 100 triples from the HDT file stored at `datasets/dataset-100M.hdt`:
+
+```bash
+$ comunica-sparql-hdt hdt@datasets/dataset-100M.hdt "CONSTRUCT WHERE { ?s ?p ?o } LIMIT 100"
+```
 
 Show the help with all options:
 
@@ -41,13 +45,35 @@ _[**Read more** about querying from the command line](https://comunica.dev/docs/
 
 This engine can be used in JavaScript/TypeScript applications as follows:
 
-TODO
+```javascript
+const QueryEngine = require('@comunica/query-sparql-hdt').QueryEngine;
+
+const bindingsStream = await myEngine.queryBindings(`
+  SELECT ?s ?p ?o WHERE {
+    ?s ?p ?o
+  } LIMIT 100`, {
+  sources: [ { type: 'hdt', value: 'datasets/dataset-100M.hdt' } ],
+});
+
+// Consume results as a stream (best performance)
+bindingsStream.on('data', (binding) => {
+  console.log(binding.toString());
+});
+bindingsStream.on('end', () => {
+  // The data-listener will not be called anymore once we get here.
+});
+bindingsStream.on('error', (error) => {
+  console.error(error);
+});
+```
 
 _[**Read more** about querying an application](https://comunica.dev/docs/query/getting_started/query_app/)._
 
 ### Usage as a SPARQL endpoint
 
-TODO
+```bash
+$ comunica-sparql-hdt-http hdt@datasets/dataset-100M.hdt
+```
 
 Show the help with all options:
 
