@@ -29,7 +29,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
-    "@comunica/jest": "^3.0.1",
+    "@comunica/jest": "^3.0.3",
     "@rubensworks/eslint-config": "^3.0.0",
     "@types/jest": "^29.0.0",
     "@types/node": "^20.0.0",
