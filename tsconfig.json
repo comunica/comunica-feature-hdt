@@ -18,15 +18,15 @@
     "inlineSources": true,
     "preserveConstEnums": true,
     "removeComments": false,
-    "sourceMap": true,
-    "esModuleInterop": true
+    "sourceMap": true
   },
   "include": [
     "engines/*/bin/**/*",
     "engines/*/lib/**/*",
     "packages/*/bin/**/*",
     "packages/*/lib/**/*",
-    "packages/*/benchmarks/**/*"
+    "packages/*/benchmarks/**/*",
+    "performance/*/lib/**/*"
   ],
   "exclude": [
     "**/node_modules"

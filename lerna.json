@@ -15,7 +15,8 @@
   },
   "packages": [
     "engines/*",
-    "packages/*"
+    "packages/*",
+    "performance/*"
   ],
   "version": "3.0.2",
   "loglevel": "success",
