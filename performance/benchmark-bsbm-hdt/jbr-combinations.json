@@ -1,0 +1,14 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/jbr/^5.0.0/components/context.jsonld"
+  ],
+  "@id": "urn:jbr:benchmark-bsbm-hdt-combinations",
+  "@type": "FullFactorialCombinationProvider",
+  "commonGenerated": true,
+  "factors": {
+    "hookSparqlEndpoint": [
+      "{\"@id\": \"urn:jbr:benchmark-bsbm-hdt:hookSparqlEndpoint\",\"@type\": \"HookCli\",\"entrypoint\": [  \"node\",  \"../../engines/query-sparql-hdt/bin/http.js\",  \"hdt@generated/dataset.hdt\",  \"-p\",  \"3001\"],\"statsFilePath\": \"output/stats.csv\"  }",
+      "{\"@id\": \"urn:jbr:benchmark-bsbm-hdt:hookSparqlEndpoint\",  \"@type\": \"HookSparqlEndpointComunica\",  \"dockerfileClient\": \"input/dockerfiles/Dockerfile-client\",  \"resourceConstraints\": {\"@type\": \"StaticDockerResourceConstraints\",\"cpu_percentage\": 100  },  \"configClient\": \"input/config-client.json\",  \"contextClient\": \"input/context-client.json\",  \"additionalBinds\": [\"/generated/dataset.nt:/tmp/dataset.nt\"],  \"clientPort\": 3001,  \"clientLogLevel\": \"info\",  \"maxMemory\": 8192}"
+    ]
+  }
+}
