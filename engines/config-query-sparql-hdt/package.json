@@ -1,6 +1,6 @@
 {
   "name": "@comunica/config-query-sparql-hdt",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "description": "default configuration files for Comunica SPARQL HDT",
   "lsd:module": true,
   "license": "MIT",
