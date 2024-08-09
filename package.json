@@ -30,7 +30,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
-    "@comunica/jest": "^3.1.0",
+    "@comunica/jest": "^3.2.1",
     "@rubensworks/eslint-config": "^3.0.0",
     "@rubensworks/process-sparql-benchmark-results": "^1.2.1",
     "@types/jest": "^29.0.0",
