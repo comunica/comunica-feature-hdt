@@ -5,9 +5,13 @@
   "lsd:module": true,
   "license": "MIT",
   "homepage": "https://comunica.dev/",
-  "repository": "https://github.com/comunica/comunica-feature-hdt/tree/master/engines/query-sparql-hdt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/comunica/comunica-feature-hdt.git",
+    "directory": "engines/query-sparql-hdt"
+  },
   "bugs": {
-    "url": "https://github.com/comunica/comunica/issues"
+    "url": "https://github.com/comunica/comunica-feature-hdt/issues"
   },
   "keywords": [
     "comunica",
