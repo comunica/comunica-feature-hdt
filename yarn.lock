@@ -4127,15 +4127,15 @@
     "@comunica/core" "4.0.1-alpha.48.0"
     "@rdfjs/types" "*"
 
-"@comunica/config-query-sparql@4.0.1-alpha.48.0", "@comunica/config-query-sparql@~4.0.1-alpha.48.0":
-  version "4.0.1-alpha.48.0"
-  resolved "https://registry.yarnpkg.com/@comunica/config-query-sparql/-/config-query-sparql-4.0.1-alpha.48.0.tgz#1425647956be4cf8ef9e77479b426f95a5e75bd6"
-  integrity sha512-ClQvBa+lcPgmG8whqHwD/PgxhMqj//S8Owhel7FcpJVEYABcH/mJ347+uF07MjQx2dYN/lRGrBRN9BPS7KVaCQ==
-
 "@comunica/config-query-sparql@^2.0.1":
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/@comunica/config-query-sparql/-/config-query-sparql-2.7.0.tgz#1030ee76d5532bc6a09a6c8af26a06c7311a5861"
   integrity sha512-rMnFgT7cz9+0z7wV4OzIMY5qM9/Z0mTGrR8y2JokoHyyTcBGOSajFmy61XCSLMCsLLG8qDXsJ4ClCCky3TGfqA==
+
+"@comunica/config-query-sparql@~4.0.1-alpha.48.0":
+  version "4.0.1-alpha.48.0"
+  resolved "https://registry.yarnpkg.com/@comunica/config-query-sparql/-/config-query-sparql-4.0.1-alpha.48.0.tgz#1425647956be4cf8ef9e77479b426f95a5e75bd6"
+  integrity sha512-ClQvBa+lcPgmG8whqHwD/PgxhMqj//S8Owhel7FcpJVEYABcH/mJ347+uF07MjQx2dYN/lRGrBRN9BPS7KVaCQ==
 
 "@comunica/context-entries@4.0.1-alpha.48.0":
   version "4.0.1-alpha.48.0"

@@ -1,6 +1,6 @@
 {
   "@context": [
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql-hdt/^3.0.0/components/context.jsonld"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql-hdt/^4.0.0/components/context.jsonld"
   ],
   "import": [
     "ccqsh:config/config-default.json"

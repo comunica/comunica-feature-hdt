@@ -1,6 +1,6 @@
 {
   "name": "@comunica/query-sparql-hdt",
-  "version": "3.0.3",
+  "version": "4.0.0",
   "description": "A Comunica engine for query evaluation over HDT files",
   "lsd:module": true,
   "license": "MIT",
@@ -228,7 +228,7 @@
     "@comunica/actor-query-result-serialize-stats": "4.0.1-alpha.48.0",
     "@comunica/actor-query-result-serialize-table": "4.0.1-alpha.48.0",
     "@comunica/actor-query-result-serialize-tree": "4.0.1-alpha.48.0",
-    "@comunica/actor-query-source-identify-hdt": "^3.0.3",
+    "@comunica/actor-query-source-identify-hdt": "^4.0.0",
     "@comunica/actor-query-source-identify-hypermedia": "4.0.1-alpha.48.0",
     "@comunica/actor-query-source-identify-hypermedia-none": "4.0.1-alpha.48.0",
     "@comunica/actor-query-source-identify-hypermedia-qpf": "4.0.1-alpha.48.0",
