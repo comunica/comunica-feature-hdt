@@ -1,4 +1,4 @@
-import { MetadataValidationState } from '@comunica/metadata';
+import { MetadataValidationState } from '@comunica/utils-metadata';
 import type * as RDF from '@rdfjs/types';
 import type { BufferedIteratorOptions } from 'asynciterator';
 import { BufferedIterator } from 'asynciterator';

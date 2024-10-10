@@ -1,8 +1,14 @@
-import type { BindingsFactory } from '@comunica/bindings-factory';
 import { quadsToBindings } from '@comunica/bus-query-source-identify';
 import { KeysQueryOperation } from '@comunica/context-entries';
-import { MetadataValidationState } from '@comunica/metadata';
-import type { IQuerySource, FragmentSelectorShape, IActionContext, BindingsStream } from '@comunica/types';
+import type {
+  IQuerySource,
+  FragmentSelectorShape,
+  IActionContext,
+  BindingsStream,
+  ComunicaDataFactory,
+} from '@comunica/types';
+import type { BindingsFactory } from '@comunica/utils-bindings-factory';
+import { MetadataValidationState } from '@comunica/utils-metadata';
 import type * as RDF from '@rdfjs/types';
 import type { AsyncIterator } from 'asynciterator';
 import { ArrayIterator } from 'asynciterator';
@@ -35,18 +41,21 @@ export class QuerySourceHdt implements IQuerySource {
   public referenceValue: string;
   protected readonly hdtPath: string;
   protected readonly hdtDocument: HDT.Document;
+  private readonly dataFactory: ComunicaDataFactory;
   private readonly bindingsFactory: BindingsFactory;
   private readonly maxBufferSize: number;
 
   public constructor(
     hdtPath: string,
     hdtDocument: HDT.Document,
+    dataFactory: ComunicaDataFactory,
     bindingsFactory: BindingsFactory,
     maxBufferSize: number,
   ) {
     this.hdtPath = hdtPath;
     this.referenceValue = hdtPath;
     this.hdtDocument = hdtDocument;
+    this.dataFactory = dataFactory;
     this.bindingsFactory = bindingsFactory;
     this.maxBufferSize = maxBufferSize;
   }
@@ -66,7 +75,6 @@ export class QuerySourceHdt implements IQuerySource {
       it.setProperty('metadata', {
         state: new MetadataValidationState(),
         cardinality: { type: 'exact', value: 0 },
-        canContainUndefs: false,
       });
     } else {
       // Create an iterator over the HDT document
@@ -82,6 +90,7 @@ export class QuerySourceHdt implements IQuerySource {
     return quadsToBindings(
       it,
       operation,
+      this.dataFactory,
       this.bindingsFactory,
       Boolean(context.get(KeysQueryOperation.unionDefaultGraph)),
     );

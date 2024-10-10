@@ -37,5 +37,6 @@ After installing, this package can be added to your engine's configuration as fo
 
 ### Config Parameters
 
+* `httpInvalidator`: An optional actor that listens to HTTP invalidation events.
 * `mediatorMergeBindingsContext`: A mediator over the [Merge Bindings Context bus](https://github.com/comunica/comunica/tree/master/packages/bus-merge-bindings-context).
 * `maxBufferSize`: The maximum number of triples that can be retrieved from HDT files in a single call, defaults to `128`.

@@ -1,16 +1,16 @@
-import { BindingsFactory } from '@comunica/bindings-factory';
 import { ActionContext } from '@comunica/core';
-import { MetadataValidationState } from '@comunica/metadata';
 import type { IActionContext } from '@comunica/types';
+import { BindingsFactory } from '@comunica/utils-bindings-factory';
+import { MetadataValidationState } from '@comunica/utils-metadata';
 import type * as HDT from 'hdt';
 import { DataFactory } from 'rdf-data-factory';
 import { Factory } from 'sparqlalgebrajs';
 import { QuerySourceHdt } from '../lib/QuerySourceHdt';
 import { MockedHdtDocument } from './MockedHdtDocument';
-import '@comunica/jest';
+import '@comunica/utils-jest';
 
 const DF = new DataFactory();
-const BF = new BindingsFactory();
+const BF = new BindingsFactory(DF);
 const AF = new Factory();
 
 describe('QuerySourceHdt', () => {
@@ -28,6 +28,7 @@ describe('QuerySourceHdt', () => {
     source = new QuerySourceHdt(
       'path',
       hdtDocument,
+      DF,
       BF,
       128,
     );
@@ -88,9 +89,18 @@ describe('QuerySourceHdt', () => {
         await expect(new Promise(resolve => data.getProperty('metadata', resolve))).resolves
           .toEqual({
             cardinality: { type: 'exact', value: 2 },
-            canContainUndefs: false,
             state: expect.any(MetadataValidationState),
-            variables: [ DF.variable('s'), DF.variable('o') ],
+            canContainUndefs: false,
+            variables: [
+              {
+                variable: DF.variable('s'),
+                canBeUndef: false,
+              },
+              {
+                variable: DF.variable('o'),
+                canBeUndef: false,
+              },
+            ],
           });
       });
 
@@ -103,9 +113,17 @@ describe('QuerySourceHdt', () => {
         await expect(new Promise(resolve => data.getProperty('metadata', resolve))).resolves
           .toEqual({
             cardinality: { type: 'exact', value: 0 },
-            canContainUndefs: false,
             state: expect.any(MetadataValidationState),
-            variables: [ DF.variable('s'), DF.variable('o') ],
+            variables: [
+              {
+                variable: DF.variable('s'),
+                canBeUndef: false,
+              },
+              {
+                variable: DF.variable('o'),
+                canBeUndef: false,
+              },
+            ],
           });
       });
     });

@@ -24,5 +24,6 @@
   "npmClient": "yarn",
   "npmClientArgs": [
     "--frozen-lockfile"
-  ]
+  ],
+  "lerna-script-tasks": "./node_modules/@comunica/utils-monorepo/lib/depCheck.js"
 }

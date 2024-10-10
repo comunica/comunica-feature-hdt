@@ -1,4 +1,4 @@
-import { MetadataValidationState } from '@comunica/metadata';
+import { MetadataValidationState } from '@comunica/utils-metadata';
 import arrayifyStream from 'arrayify-stream';
 import { DataFactory } from 'rdf-data-factory';
 import { HdtIterator } from '../lib/HdtIterator';
