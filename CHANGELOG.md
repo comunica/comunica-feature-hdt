@@ -1,8 +1,8 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-<a name="v4.0.0"></a>
-## [v4.0.0](https://github.com/comunica/comunica-feature-hdt/compare/v3.0.3...v4.0.0) - 2024-10-10
+<a name="v4.0.1"></a>
+## [v4.0.1](https://github.com/comunica/comunica-feature-hdt/compare/v3.0.3...v4.0.1) - 2024-10-15
 
 ### BREAKING CHANGES
 * [Update to Comunica v4](https://github.com/comunica/comunica-feature-hdt/commit/164087356698e9a3bcb22cc07170a2e7868dc5c0)
