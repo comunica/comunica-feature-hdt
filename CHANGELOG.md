@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+<a name="v4.0.2"></a>
+## [v4.0.2](https://github.com/comunica/comunica-feature-hdt/compare/v4.0.1...v4.0.2) - 2024-10-15
+
+### Fixed
+* [Fix invalid config dependency](https://github.com/comunica/comunica-feature-hdt/commit/6df2c6a564783616f6169b10e63156b4dda24670)
+
 <a name="v4.0.1"></a>
 ## [v4.0.1](https://github.com/comunica/comunica-feature-hdt/compare/v3.0.3...v4.0.1) - 2024-10-15
 

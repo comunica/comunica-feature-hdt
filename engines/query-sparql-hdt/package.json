@@ -1,6 +1,6 @@
 {
   "name": "@comunica/query-sparql-hdt",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A Comunica engine for query evaluation over HDT files",
   "lsd:module": true,
   "license": "MIT",
