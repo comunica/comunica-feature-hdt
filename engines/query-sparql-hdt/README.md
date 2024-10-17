@@ -47,6 +47,7 @@ This engine can be used in JavaScript/TypeScript applications as follows:
 
 ```javascript
 const QueryEngine = require('@comunica/query-sparql-hdt').QueryEngine;
+const myEngine = new QueryEngine();
 
 const bindingsStream = await myEngine.queryBindings(`
   SELECT ?s ?p ?o WHERE {
