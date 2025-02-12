@@ -1,11 +1,9 @@
-import { quadsToBindings } from '@comunica/bus-query-source-identify';
-import { KeysQueryOperation } from '@comunica/context-entries';
 import type {
-  IQuerySource,
-  FragmentSelectorShape,
-  IActionContext,
   BindingsStream,
   ComunicaDataFactory,
+  FragmentSelectorShape,
+  IActionContext,
+  IQuerySource,
 } from '@comunica/types';
 import type { BindingsFactory } from '@comunica/utils-bindings-factory';
 import { MetadataValidationState } from '@comunica/utils-metadata';
@@ -13,37 +11,23 @@ import type * as RDF from '@rdfjs/types';
 import type { AsyncIterator } from 'asynciterator';
 import { ArrayIterator } from 'asynciterator';
 import type * as HDT from 'hdt';
-import { DataFactory } from 'rdf-data-factory';
 import type { Algebra } from 'sparqlalgebrajs';
 import { Factory } from 'sparqlalgebrajs';
 import { HdtIterator } from './HdtIterator';
 
 const AF = new Factory();
-const DF = new DataFactory<RDF.BaseQuad>();
 
 /**
  * A query source over an HDT file.
  */
 export class QuerySourceHdt implements IQuerySource {
-  protected static readonly SELECTOR_SHAPE: FragmentSelectorShape = {
-    type: 'operation',
-    operation: {
-      operationType: 'pattern',
-      pattern: AF.createPattern(DF.variable('s'), DF.variable('p'), DF.variable('o')),
-    },
-    variablesOptional: [
-      DF.variable('s'),
-      DF.variable('p'),
-      DF.variable('o'),
-    ],
-  };
-
   public referenceValue: string;
   protected readonly hdtPath: string;
   protected readonly hdtDocument: HDT.Document;
   private readonly dataFactory: ComunicaDataFactory;
   private readonly bindingsFactory: BindingsFactory;
   private readonly maxBufferSize: number;
+  private readonly selectorShape: FragmentSelectorShape;
 
   public constructor(
     hdtPath: string,
@@ -58,28 +42,46 @@ export class QuerySourceHdt implements IQuerySource {
     this.dataFactory = dataFactory;
     this.bindingsFactory = bindingsFactory;
     this.maxBufferSize = maxBufferSize;
+    this.selectorShape = {
+      type: 'operation',
+      operation: {
+        operationType: 'pattern',
+        pattern: AF.createPattern(
+          this.dataFactory.variable('s'),
+          this.dataFactory.variable('p'),
+          this.dataFactory.variable('o'),
+        ),
+      },
+      variablesOptional: [
+        this.dataFactory.variable('s'),
+        this.dataFactory.variable('p'),
+        this.dataFactory.variable('o'),
+      ],
+    }; ;
   }
 
   public async getSelectorShape(): Promise<FragmentSelectorShape> {
-    return QuerySourceHdt.SELECTOR_SHAPE;
+    return this.selectorShape;
   }
 
-  public queryBindings(operation: Algebra.Operation, context: IActionContext): BindingsStream {
+  public queryBindings(operation: Algebra.Operation, _context: IActionContext): BindingsStream {
     if (operation.type !== 'pattern') {
       throw new Error(`Attempted to pass non-pattern operation '${operation.type}' to QuerySourceRdfJs`);
     }
 
-    let it: AsyncIterator<RDF.Quad>;
+    let it: AsyncIterator<RDF.Bindings>;
     if (operation.graph.termType === 'NamedNode') {
-      it = new ArrayIterator<RDF.Quad>([], { autoStart: false });
+      it = new ArrayIterator<RDF.Bindings>([], { autoStart: false });
       it.setProperty('metadata', {
         state: new MetadataValidationState(),
         cardinality: { type: 'exact', value: 0 },
+        variables: [],
       });
     } else {
       // Create an iterator over the HDT document
       it = new HdtIterator(
         this.hdtDocument,
+        this.bindingsFactory,
         operation.subject,
         operation.predicate,
         operation.object,
@@ -87,13 +89,7 @@ export class QuerySourceHdt implements IQuerySource {
       );
     }
 
-    return quadsToBindings(
-      it,
-      operation,
-      this.dataFactory,
-      this.bindingsFactory,
-      Boolean(context.get(KeysQueryOperation.unionDefaultGraph)),
-    );
+    return it;
   }
 
   public queryQuads(

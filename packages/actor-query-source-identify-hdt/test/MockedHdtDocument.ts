@@ -28,6 +28,16 @@ export class MockedHdtDocument implements HDT.Document {
     object: RDF.Term,
     options: Record<string, any>,
   ): Promise<HDT.SearchResult> {
+    return <any> undefined;
+  }
+
+  public async searchBindings(
+    bindingsFactory: RDF.BindingsFactory,
+    subject: RDF.Term,
+    predicate: RDF.Term,
+    object: RDF.Term,
+    options: Record<string, any>,
+  ): Promise<HDT.BindingsResult> {
     if (this.error) {
       throw this.error;
     }
@@ -35,16 +45,26 @@ export class MockedHdtDocument implements HDT.Document {
     const offset: number = options.offset || 0;
     const limit = Math.min(options.limit, this.triples.length);
     let i = 0;
-    const triples: RDF.Quad[] = [];
+    const bindings: RDF.Bindings[] = [];
     for (const triple of this.triples) {
       if (MockedHdtDocument.triplesMatch(tripleIn, triple)) {
         if (i >= offset && i < offset + limit) {
-          triples.push(<RDF.Quad> triple);
+          const entries: [RDF.Variable, RDF.Term][] = [];
+          if (subject.termType === 'Variable') {
+            entries.push([ subject, triple.subject ]);
+          }
+          if (predicate.termType === 'Variable') {
+            entries.push([ predicate, triple.predicate ]);
+          }
+          if (object.termType === 'Variable') {
+            entries.push([ object, triple.object ]);
+          }
+          bindings.push(bindingsFactory.bindings(entries));
         }
         i++;
       }
     }
-    return { triples, totalCount: i, hasExactCount: true };
+    return { bindings, totalCount: i, hasExactCount: true };
   }
 
   public async countTriples(subject?: RDF.Term, predicate?: RDF.Term, object?: RDF.Term): Promise<HDT.SearchResult> {
