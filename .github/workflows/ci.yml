@@ -142,11 +142,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: performance-benchmark-watdiv-hdt
           path: performance/benchmark-watdiv-hdt/combinations/combination_0/output/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: performance-benchmark-bsbm-hdt
           path: performance/benchmark-bsbm-hdt/combinations/combination_0/output/
