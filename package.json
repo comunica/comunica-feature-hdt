@@ -36,7 +36,7 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@comunica/packager": "^4.0.1",
-    "@comunica/utils-jest": "^4.2.0",
+    "@comunica/utils-jest": "^4.4.0",
     "@comunica/utils-monorepo": "^4.0.1",
     "@rubensworks/eslint-config": "^3.0.0",
     "@rubensworks/process-sparql-benchmark-results": "^1.3.4",
