@@ -57,7 +57,7 @@
     "nodemon": "^3.0.0",
     "npm-check-updates": "^19.0.0",
     "pre-commit": "^1.2.2",
-    "rdf-data-factory": "^1.1.0",
+    "rdf-data-factory": "^2.0.0",
     "rdf-quad": "^2.0.0",
     "rdf-test-suite-ldf": "^2.0.0",
     "sparqlalgebrajs": "^4.0.0",
