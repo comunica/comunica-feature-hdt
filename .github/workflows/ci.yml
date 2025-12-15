@@ -126,7 +126,7 @@ jobs:
         run: yarn install
       - name: Run benchmarks
         run: cd performance/benchmark-${{ matrix.benchmark }}/ && yarn run performance:ci
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: performance-benchmark-${{ matrix.benchmark }}
           path: performance/benchmark-${{ matrix.benchmark }}/combinations/combination_0/output/
@@ -142,11 +142,11 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22.x
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: performance-benchmark-watdiv-hdt
           path: performance/benchmark-watdiv-hdt/combinations/combination_0/output/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: performance-benchmark-bsbm-hdt
           path: performance/benchmark-bsbm-hdt/combinations/combination_0/output/
