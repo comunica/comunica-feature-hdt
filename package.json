@@ -60,7 +60,7 @@
     "rdf-data-factory": "^1.1.0",
     "rdf-quad": "^2.0.0",
     "rdf-test-suite-ldf": "^2.0.0",
-    "sparqlalgebrajs": "^4.0.0",
+    "sparqlalgebrajs": "^5.0.0",
     "stream-to-string": "^1.1.0",
     "streamify-array": "^2.0.0",
     "streamify-string": "^1.0.1",

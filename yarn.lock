@@ -15467,7 +15467,7 @@ sparqlalgebrajs@^4.0.0, sparqlalgebrajs@^4.2.0, sparqlalgebrajs@^4.3.8:
     rdf-terms "^1.10.0"
     sparqljs "^3.7.1"
 
-sparqlalgebrajs@^5.0.2:
+sparqlalgebrajs@^5.0.0, sparqlalgebrajs@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/sparqlalgebrajs/-/sparqlalgebrajs-5.0.2.tgz#ec61c85bdfc053095815c5b375703cb78849b424"
   integrity sha512-Xz7byRqWqCMkbM+3ogGmKO/wsezQKQQNleoggP03sCTTFfCh/ZlN5CGt+HkrOenDSktZ93jpKFbbaIRjLOYtWw==
