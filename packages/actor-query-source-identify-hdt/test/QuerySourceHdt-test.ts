@@ -52,6 +52,12 @@ describe('QuerySourceHdt', () => {
     });
   });
 
+  describe('getFilterFactor', () => {
+    it('should return a string representation', async() => {
+      await expect(source.getFilterFactor(ctx)).resolves.toBe(1);
+    });
+  });
+
   describe('toString', () => {
     it('should return a string representation', async() => {
       expect(source.toString()).toBe('QuerySourceHdt(path)');

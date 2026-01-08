@@ -5,17 +5,16 @@ import type {
   IActionContext,
   IQuerySource,
 } from '@comunica/types';
+import { Algebra, isKnownOperation, AlgebraFactory } from '@comunica/utils-algebra';
 import type { BindingsFactory } from '@comunica/utils-bindings-factory';
 import { MetadataValidationState } from '@comunica/utils-metadata';
 import type * as RDF from '@rdfjs/types';
 import type { AsyncIterator } from 'asynciterator';
 import { ArrayIterator } from 'asynciterator';
 import type * as HDT from 'hdt';
-import type { Algebra } from 'sparqlalgebrajs';
-import { Factory } from 'sparqlalgebrajs';
 import { HdtIterator } from './HdtIterator';
 
-const AF = new Factory();
+const AF = new AlgebraFactory();
 
 /**
  * A query source over an HDT file.
@@ -60,12 +59,16 @@ export class QuerySourceHdt implements IQuerySource {
     }; ;
   }
 
+  public async getFilterFactor(_context: IActionContext): Promise<number> {
+    return 1;
+  }
+
   public async getSelectorShape(): Promise<FragmentSelectorShape> {
     return this.selectorShape;
   }
 
   public queryBindings(operation: Algebra.Operation, _context: IActionContext): BindingsStream {
-    if (operation.type !== 'pattern') {
+    if (!isKnownOperation(operation, Algebra.Types.PATTERN)) {
       throw new Error(`Attempted to pass non-pattern operation '${operation.type}' to QuerySourceRdfJs`);
     }
 
@@ -107,7 +110,7 @@ export class QuerySourceHdt implements IQuerySource {
   }
 
   public queryVoid(
-    _operation: Algebra.Update,
+    _operation: Algebra.Operation,
     _context: IActionContext,
   ): Promise<void> {
     throw new Error('queryVoid is not implemented in QuerySourceHdt');

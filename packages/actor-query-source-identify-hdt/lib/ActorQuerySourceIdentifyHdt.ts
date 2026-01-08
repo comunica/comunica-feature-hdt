@@ -27,6 +27,9 @@ export class ActorQuerySourceIdentifyHdt extends ActorQuerySourceIdentify {
 
   public constructor(args: IActorQuerySourceIdentifyHdtArgs) {
     super(args);
+    this.httpInvalidator = args.httpInvalidator;
+    this.mediatorMergeBindingsContext = args.mediatorMergeBindingsContext;
+    this.maxBufferSize = args.maxBufferSize;
     this.httpInvalidator.addInvalidateListener(
       ({ url }: IActionHttpInvalidate) => {
         if (!url) {
@@ -80,7 +83,7 @@ export interface IActorQuerySourceIdentifyHdtArgs extends IActorQuerySourceIdent
   /* eslint-disable max-len */
   /**
    * An actor that listens to HTTP invalidation events
-   * @default {<default_invalidator> a <npmd:@comunica/bus-http-invalidate/^4.0.0/components/ActorHttpInvalidateListenable.jsonld#ActorHttpInvalidateListenable>}
+   * @default {<default_invalidator> a <npmd:@comunica/bus-http-invalidate/^5.0.0/components/ActorHttpInvalidateListenable.jsonld#ActorHttpInvalidateListenable>}
    */
   httpInvalidator: ActorHttpInvalidateListenable;
   /* eslint-enable max-len */
