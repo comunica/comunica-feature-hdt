@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+<a name="v5.0.0"></a>
+## [v5.0.0](https://github.com/comunica/comunica-feature-hdt/compare/v4.0.2...v5.0.0) - 2026-01-08
+
+### BREAKING CHANGES
+* [Update to Comunica v5](https://github.com/comunica/comunica-feature-hdt/commit/8129884b99e47ba6e8ba010c3a656afa7104377a)
+  * Relevant changes can be found at https://github.com/comunica/comunica/blob/master/CHANGELOG.md#v501---2026-01-08
+
+### Changed
+* [Avoid creation of intermediary triple objects to improve performance](https://github.com/comunica/comunica-feature-hdt/commit/623d9afe92662baccba1682fea35bf61e8132735)
+
 <a name="v4.0.2"></a>
 ## [v4.0.2](https://github.com/comunica/comunica-feature-hdt/compare/v4.0.1...v4.0.2) - 2024-10-15
 
