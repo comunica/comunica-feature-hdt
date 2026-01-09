@@ -11156,15 +11156,15 @@ hasown@^2.0.0, hasown@^2.0.1, hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
-hdt@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/hdt/-/hdt-3.2.2.tgz#f9375dd38c582795978bbab645aeebc6839e35f9"
-  integrity sha512-Mw3LCteRwSm5fIy4MY77gMgJzeCNz3j44OF/3/R41VikVzWy08trJgv2JgSRg0M1oxVRFnMB6mtbQGN4glLXQw==
+hdt@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/hdt/-/hdt-3.3.1.tgz#f2007684fbf28822520fde0a25b2431856ed32e8"
+  integrity sha512-o9pGS9+u16x8gEW0QVkdUTxfUvj4TkHN0eywOhfqqYY/ZmOyu1wukK29wpW4/36yIE+NduO0C7N5F7yIE92WDw==
   dependencies:
     minimist "^1.1.0"
-    n3 "^1.17.3"
-    nan "^2.19.0"
-    rdf-string "^1.6.3"
+    n3 "^2.0.1"
+    nan "^2.24.0"
+    rdf-string "^2.0.1"
 
 homedir-polyfill@^1.0.1:
   version "1.0.3"
@@ -13488,7 +13488,7 @@ mute-stream@^2.0.0:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-2.0.0.tgz#a5446fc0c512b71c83c44d908d5c7b7b4c493b2b"
   integrity sha512-WWdIxpyjEn+FhQJQQv9aQAYlHoNVdzIzUySNV1gHUPDSdZJ3yZn7pAAbQcV7B56Mvu881q9FZV+0Vx2xC44VWA==
 
-n3@^1.0.0, n3@^1.16.3, n3@^1.17.0, n3@^1.17.3:
+n3@^1.0.0, n3@^1.16.3, n3@^1.17.0:
   version "1.20.4"
   resolved "https://registry.yarnpkg.com/n3/-/n3-1.20.4.tgz#df003f4e107d941d42100f332199bb74b4384f9e"
   integrity sha512-tHeX1Q3/+ET38qYMOfErglmr5F2tzb+WCt82sZhCokzSZHe95CkHzyuzCMqcRB8hTpW+zn7HqamGXCWW/xXCHg==
@@ -13513,10 +13513,23 @@ n3@^2.0.0:
     buffer "^6.0.3"
     readable-stream "^4.0.0"
 
+n3@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/n3/-/n3-2.0.1.tgz#ab0a211aa5bffe909dae196c42d29cd708146e6d"
+  integrity sha512-Q6TPsTrlEoELXQ47tSBYcAZ800PQN9gtSImRUqQYoBq+Q7riIUAoDgf3tuMv6PuwonO86SBIx5GfOxvS4A/4kw==
+  dependencies:
+    buffer "^6.0.3"
+    readable-stream "^4.0.0"
+
 nan@^2.18.0, nan@^2.19.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.20.0.tgz#08c5ea813dd54ed16e5bd6505bf42af4f7838ca3"
   integrity sha512-bk3gXBZDGILuuo/6sKtr0DQmSThYHLtNCdSdXk9YkxD/jK6X2vmCyyXBBxyqZ4XcnzTyYEAThfX3DCEnLf6igw==
+
+nan@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.24.0.tgz#a8919b36e692aa5b260831910e4f81419fc0a283"
+  integrity sha512-Vpf9qnVW1RaDkoNKFUvfxqAbtI8ncb8OJlqZ9wwpXzWPEsvsB1nvdUi6oYrHIkQ1Y/tMDnr1h4nczS0VB9Xykg==
 
 nanoid@^3.3.7:
   version "3.3.7"
@@ -14860,7 +14873,7 @@ rdf-string-ttl@^2.0.1:
   dependencies:
     rdf-data-factory "^2.0.0"
 
-rdf-string@^1.0.0, rdf-string@^1.5.0, rdf-string@^1.6.0, rdf-string@^1.6.3:
+rdf-string@^1.0.0, rdf-string@^1.5.0, rdf-string@^1.6.0:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/rdf-string/-/rdf-string-1.6.3.tgz#5c3173fad13e6328698277fb8ff151e3423282ab"
   integrity sha512-HIVwQ2gOqf+ObsCLSUAGFZMIl3rh9uGcRf1KbM85UDhKqP+hy6qj7Vz8FKt3GA54RiThqK3mNcr66dm1LP0+6g==

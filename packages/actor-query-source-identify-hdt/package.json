@@ -52,6 +52,6 @@
     "@comunica/utils-metadata": "^5.0.0",
     "@rdfjs/types": "*",
     "asynciterator": "^3.10.0",
-    "hdt": "^3.2.2"
+    "hdt": "^3.3.1"
   }
 }
