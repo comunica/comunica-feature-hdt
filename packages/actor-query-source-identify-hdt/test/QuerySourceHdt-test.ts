@@ -1,18 +1,17 @@
 import { ActionContext } from '@comunica/core';
 import type { IActionContext } from '@comunica/types';
+import { AlgebraFactory } from '@comunica/utils-algebra';
 import { BindingsFactory } from '@comunica/utils-bindings-factory';
 import { MetadataValidationState } from '@comunica/utils-metadata';
-import type * as RDF from '@rdfjs/types';
 import type * as HDT from 'hdt';
 import { DataFactory } from 'rdf-data-factory';
-import { Factory } from 'sparqlalgebrajs';
 import { QuerySourceHdt } from '../lib/QuerySourceHdt';
 import { MockedHdtDocument } from './MockedHdtDocument';
 import '@comunica/utils-jest';
 
-const DF = new DataFactory<RDF.BaseQuad>();
+const DF = new DataFactory();
 const BF = new BindingsFactory(DF);
-const AF = new Factory();
+const AF = new AlgebraFactory();
 
 describe('QuerySourceHdt', () => {
   let hdtDocument: HDT.Document;
