@@ -53,7 +53,7 @@
     "manual-git-changelog": "^1.0.0",
     "nodemon": "^3.0.0",
     "npm-check-updates": "^22.0.0",
-    "pre-commit": "^1.2.2",
+    "pre-commit": "^2.0.0",
     "rdf-data-factory": "^2.0.2",
     "rdf-quad": "^2.0.0",
     "rdf-test-suite-ldf": "^2.0.1",
