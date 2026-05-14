@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+<a name="v5.0.1"></a>
+## [v5.0.1](https://github.com/comunica/comunica-feature-hdt/compare/v5.0.0...v5.0.1) - 2026-05-14
+
+### Fixed
+* [Bump HDT to add Node 26 support](https://github.com/comunica/comunica-feature-hdt/commit/11c0d29a3ce224513bdcacae796fa432ac4fbf0f)
+
 <a name="v5.0.0"></a>
 ## [v5.0.0](https://github.com/comunica/comunica-feature-hdt/compare/v4.0.2...v5.0.0) - 2026-01-08
 
