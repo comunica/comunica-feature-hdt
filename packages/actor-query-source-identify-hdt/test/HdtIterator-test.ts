@@ -196,6 +196,88 @@ describe('HdtIterator', () => {
     ]);
   });
 
+  describe('paging', () => {
+    const allBindings = [
+      BF.fromRecord({ s: DF.namedNode('s1'), p: DF.namedNode('p1'), o: DF.namedNode('o1') }),
+      BF.fromRecord({ s: DF.namedNode('s1'), p: DF.namedNode('p1'), o: DF.namedNode('o2') }),
+      BF.fromRecord({ s: DF.namedNode('s1'), p: DF.namedNode('p2'), o: DF.namedNode('o1') }),
+      BF.fromRecord({ s: DF.namedNode('s1'), p: DF.namedNode('p2'), o: DF.namedNode('o2') }),
+      BF.fromRecord({ s: DF.namedNode('s2'), p: DF.namedNode('p1'), o: DF.namedNode('o1') }),
+      BF.fromRecord({ s: DF.namedNode('s2'), p: DF.namedNode('p1'), o: DF.namedNode('o2') }),
+      BF.fromRecord({ s: DF.namedNode('s2'), p: DF.namedNode('p2'), o: DF.namedNode('o1') }),
+      BF.fromRecord({ s: DF.namedNode('s2'), p: DF.namedNode('p2'), o: DF.namedNode('o2') }),
+    ];
+
+    // The offset and limit of every call the iterator makes to the document
+    function pagesOf(searchBindings: jest.SpyInstance): { offset: number; limit: number }[] {
+      return searchBindings.mock.calls.map(call => call[4]);
+    }
+
+    it('should not read ahead without a page size', async() => {
+      const searchBindings = jest.spyOn(hdtDocument, 'searchBindings');
+      await expect(new HdtIterator(
+        hdtDocument,
+        BF,
+        DF.variable('s'),
+        DF.variable('p'),
+        DF.variable('o'),
+        { maxBufferSize: 1 },
+      )).toEqualBindingsStream(allBindings);
+      expect(pagesOf(searchBindings).every(({ limit }) => limit === 1)).toBeTruthy();
+    });
+
+    it('should grow the page towards the configured page size', async() => {
+      const searchBindings = jest.spyOn(hdtDocument, 'searchBindings');
+      await expect(new HdtIterator(
+        hdtDocument,
+        BF,
+        DF.variable('s'),
+        DF.variable('p'),
+        DF.variable('o'),
+        { maxBufferSize: 1, pageSize: 8_192 },
+      )).toEqualBindingsStream(allBindings);
+      // The first page is what the consumer asked for, so short queries pay for nothing extra
+      expect(pagesOf(searchBindings)).toEqual([
+        { offset: 0, limit: 1 },
+        { offset: 1, limit: 2 },
+        { offset: 3, limit: 4 },
+        { offset: 7, limit: 8 },
+      ]);
+    });
+
+    it('should not grow the page beyond the configured page size', async() => {
+      const searchBindings = jest.spyOn(hdtDocument, 'searchBindings');
+      await expect(new HdtIterator(
+        hdtDocument,
+        BF,
+        DF.variable('s'),
+        DF.variable('p'),
+        DF.variable('o'),
+        { maxBufferSize: 1, pageSize: 2 },
+      )).toEqualBindingsStream(allBindings);
+      expect(pagesOf(searchBindings)).toEqual([
+        { offset: 0, limit: 1 },
+        { offset: 1, limit: 2 },
+        { offset: 3, limit: 2 },
+        { offset: 5, limit: 2 },
+        { offset: 7, limit: 2 },
+      ]);
+    });
+
+    it('should never request less than what its consumer asks for', async() => {
+      const searchBindings = jest.spyOn(hdtDocument, 'searchBindings');
+      await expect(new HdtIterator(
+        hdtDocument,
+        BF,
+        DF.variable('s'),
+        DF.variable('p'),
+        DF.variable('o'),
+        { maxBufferSize: 4, pageSize: 1 },
+      )).toEqualBindingsStream(allBindings);
+      expect(pagesOf(searchBindings)[0]).toEqual({ offset: 0, limit: 4 });
+    });
+  });
+
   it('should not return anything when the document is closed', async() => {
     hdtDocument.close();
     await expect(new HdtIterator(

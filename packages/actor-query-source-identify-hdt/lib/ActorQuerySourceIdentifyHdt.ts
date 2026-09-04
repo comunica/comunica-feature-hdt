@@ -24,12 +24,14 @@ export class ActorQuerySourceIdentifyHdt extends ActorQuerySourceIdentify {
 
   public readonly mediatorMergeBindingsContext: MediatorMergeBindingsContext;
   public readonly maxBufferSize: number;
+  public readonly pageSize: number;
 
   public constructor(args: IActorQuerySourceIdentifyHdtArgs) {
     super(args);
     this.httpInvalidator = args.httpInvalidator;
     this.mediatorMergeBindingsContext = args.mediatorMergeBindingsContext;
     this.maxBufferSize = args.maxBufferSize;
+    this.pageSize = args.pageSize;
     this.httpInvalidator.addInvalidateListener(
       ({ url }: IActionHttpInvalidate) => {
         if (!url) {
@@ -60,6 +62,7 @@ export class ActorQuerySourceIdentifyHdt extends ActorQuerySourceIdentify {
       dataFactory,
       await BindingsFactory.create(this.mediatorMergeBindingsContext, action.context, dataFactory),
       this.maxBufferSize,
+      this.pageSize,
     );
     this.createdSources.push(new WeakRef(source));
 
@@ -92,8 +95,16 @@ export interface IActorQuerySourceIdentifyHdtArgs extends IActorQuerySourceIdent
    */
   mediatorMergeBindingsContext: MediatorMergeBindingsContext;
   /**
-   * The maximum number of triples that can be retrieved from HDT files in a single call.
+   * The number of bindings this actor's iterators buffer ahead of their consumer.
    * @default {128}
    */
   maxBufferSize: number;
+  /**
+   * The number of triples to request from an HDT document in a single call.
+   * Every call seeks to its offset inside the document, and for patterns with a bound predicate
+   * that seek is linear in the offset, so small pages make a full traversal quadratic.
+   * @range {integer}
+   * @default {8192}
+   */
+  pageSize: number;
 }
