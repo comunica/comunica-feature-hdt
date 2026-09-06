@@ -4,6 +4,7 @@ import { DataFactory } from 'rdf-data-factory';
 
 export class MockedHdtDocument implements HDT.Document {
   public closed = false;
+  public countTriplesCalls = 0;
 
   private readonly triples: RDF.BaseQuad[];
   private error: Error | undefined;
@@ -68,6 +69,7 @@ export class MockedHdtDocument implements HDT.Document {
   }
 
   public async countTriples(subject?: RDF.Term, predicate?: RDF.Term, object?: RDF.Term): Promise<HDT.SearchResult> {
+    this.countTriplesCalls++;
     if (this.error) {
       throw this.error;
     }

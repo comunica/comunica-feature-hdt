@@ -16,6 +16,8 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
   protected readonly object: RDF.Term;
 
   protected position: number;
+  private readonly variables: MetadataVariable[];
+  private metadataRequested = false;
 
   public constructor(
     hdtDocument: HDT.Document,
@@ -43,16 +45,27 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
     if (object.termType === 'Variable' && !variables.some(variable => variable.variable.equals(object))) {
       variables.push({ variable: object, canBeUndef: false });
     }
+    this.variables = variables;
+  }
 
-    this.hdtDocument.countTriples(subject, predicate, object)
-      .then(({ totalCount, hasExactCount }) => {
-        this.setProperty('metadata', {
-          state: new MetadataValidationState(),
-          cardinality: { type: hasExactCount ? 'exact' : 'estimate', value: totalCount },
-          variables,
-        });
-      })
-      .catch(error => this.destroy(error));
+  /**
+   * The cardinality costs a native lookup of its own, so it is only determined once something asks for it.
+   * Iterators that are read but never planned over, such as the inner lookups of a join, never pay for it.
+   */
+  public override getProperty<P>(propertyName: string, callback?: (value: P) => void): P | undefined {
+    if (propertyName === 'metadata' && !this.metadataRequested) {
+      this.metadataRequested = true;
+      this.hdtDocument.countTriples(this.subject, this.predicate, this.object)
+        .then(({ totalCount, hasExactCount }) => {
+          this.setProperty('metadata', {
+            state: new MetadataValidationState(),
+            cardinality: { type: hasExactCount ? 'exact' : 'estimate', value: totalCount },
+            variables: this.variables,
+          });
+        })
+        .catch(error => this.destroy(error));
+    }
+    return super.getProperty(propertyName, callback);
   }
 
   public override _read(count: number, done: () => void): void {

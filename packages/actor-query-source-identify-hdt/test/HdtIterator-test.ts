@@ -222,6 +222,37 @@ describe('HdtIterator', () => {
       .rejects.toBe(e);
   });
 
+  it('should error when the count behind the metadata property fails', async() => {
+    const e = new Error('HdtIterator-test metadata');
+    hdtDocument.setError(e);
+    const it = new HdtIterator(
+      hdtDocument,
+      BF,
+      DF.variable('s'),
+      DF.variable('p'),
+      DF.variable('o'),
+      { autoStart: false },
+    );
+    it.getProperty('metadata', () => {
+      // Never called: the count rejects before any metadata is set
+    });
+    await expect(new Promise((resolve, reject) => it.on('error', reject))).rejects.toBe(e);
+  });
+
+  it('should only determine the metadata once', async() => {
+    const it = new HdtIterator(
+      hdtDocument,
+      BF,
+      DF.variable('s'),
+      DF.variable('p'),
+      DF.variable('o'),
+      { autoStart: false },
+    );
+    await new Promise(resolve => it.getProperty('metadata', resolve));
+    await new Promise(resolve => it.getProperty('metadata', resolve));
+    expect(hdtDocument.countTriplesCalls).toBe(1);
+  });
+
   it('should expose the metadata property', async() => {
     const it = new HdtIterator(
       hdtDocument,
