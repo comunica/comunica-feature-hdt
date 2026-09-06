@@ -95,6 +95,8 @@ describe('QuerySourceHdt', () => {
         await expect(new Promise(resolve => data.getProperty('metadata', resolve))).resolves
           .toEqual({
             cardinality: { type: 'exact', value: 2 },
+            pageSize: 128,
+            requestTime: expect.any(Number),
             state: expect.any(MetadataValidationState),
             variables: [
               {

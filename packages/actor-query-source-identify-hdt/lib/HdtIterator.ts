@@ -6,6 +6,11 @@ import { BufferedIterator } from 'asynciterator';
 import type * as HDT from 'hdt';
 
 /**
+ * The largest number of items asynciterator ever asks `_read` for at once.
+ */
+const MAX_READ_SIZE = 128;
+
+/**
  * Iterates over an HDT document in chunks for a triple pattern query.
  */
 export class HdtIterator extends BufferedIterator<RDF.Bindings> {
@@ -16,6 +21,7 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
   protected readonly object: RDF.Term;
 
   protected position: number;
+  protected readonly pageSize: number;
 
   public constructor(
     hdtDocument: HDT.Document,
@@ -32,6 +38,7 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
     this.predicate = predicate;
     this.object = object;
     this.position = 0;
+    this.pageSize = Math.min(this.maxBufferSize, MAX_READ_SIZE);
 
     const variables: MetadataVariable[] = [];
     if (subject.termType === 'Variable') {
@@ -44,11 +51,16 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
       variables.push({ variable: object, canBeUndef: false });
     }
 
+    // The count is a native lookup of the same shape as the ones that fetch the results, so its duration is a
+    // usable estimate of what a page of results costs. Without it the planner treats HDT as a free local source.
+    const countStart = performance.now();
     this.hdtDocument.countTriples(subject, predicate, object)
       .then(({ totalCount, hasExactCount }) => {
         this.setProperty('metadata', {
           state: new MetadataValidationState(),
           cardinality: { type: hasExactCount ? 'exact' : 'estimate', value: totalCount },
+          pageSize: this.pageSize,
+          requestTime: performance.now() - countStart,
           variables,
         });
       })

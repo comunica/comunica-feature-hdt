@@ -235,6 +235,8 @@ describe('HdtIterator', () => {
     expect(metadata).toEqual({
       state: new MetadataValidationState(),
       cardinality: { type: 'exact', value: 8 },
+      pageSize: 4,
+      requestTime: expect.any(Number),
       variables: [
         { variable: DF.variable('s'), canBeUndef: false },
         { variable: DF.variable('p'), canBeUndef: false },
@@ -256,6 +258,8 @@ describe('HdtIterator', () => {
     expect(metadata).toEqual({
       state: new MetadataValidationState(),
       cardinality: { type: 'estimate', value: 1 },
+      pageSize: 4,
+      requestTime: expect.any(Number),
       variables: [],
     });
   });
