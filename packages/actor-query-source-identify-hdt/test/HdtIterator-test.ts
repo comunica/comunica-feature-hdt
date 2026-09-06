@@ -222,6 +222,20 @@ describe('HdtIterator', () => {
       .rejects.toBe(e);
   });
 
+  it('should return the correct stream for a document larger than a single page', async() => {
+    const triples = [ ...Array.from({ length: 300 }).keys() ].map(i => quad('s', 'p', `o${i}`));
+    const it = new HdtIterator(
+      new MockedHdtDocument(triples),
+      BF,
+      DF.namedNode('s'),
+      DF.namedNode('p'),
+      DF.variable('o'),
+      {},
+    );
+    await expect(it).toEqualBindingsStream(triples
+      .map(triple => BF.fromRecord({ o: triple.object })));
+  });
+
   it('should expose the metadata property', async() => {
     const it = new HdtIterator(
       hdtDocument,

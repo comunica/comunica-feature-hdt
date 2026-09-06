@@ -64,7 +64,7 @@ export class MockedHdtDocument implements HDT.Document {
         i++;
       }
     }
-    return { bindings, totalCount: i, hasExactCount: true };
+    return { bindings, totalCount: i, hasExactCount: i > 1 };
   }
 
   public async countTriples(subject?: RDF.Term, predicate?: RDF.Term, object?: RDF.Term): Promise<HDT.SearchResult> {

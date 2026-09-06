@@ -6,6 +6,12 @@ import { BufferedIterator } from 'asynciterator';
 import type * as HDT from 'hdt';
 
 /**
+ * The number of triples to ask for in the call that also establishes the cardinality.
+ * asynciterator never asks `_read` for more than 128 items at a time.
+ */
+const FIRST_PAGE_SIZE = 128;
+
+/**
  * Iterates over an HDT document in chunks for a triple pattern query.
  */
 export class HdtIterator extends BufferedIterator<RDF.Bindings> {
@@ -16,6 +22,10 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
   protected readonly object: RDF.Term;
 
   protected position: number;
+  /**
+   * The result of the call that established the cardinality, held until the first read consumes it.
+   */
+  private firstPage: Promise<HDT.BindingsResult> | undefined;
 
   public constructor(
     hdtDocument: HDT.Document,
@@ -44,7 +54,17 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
       variables.push({ variable: object, canBeUndef: false });
     }
 
-    this.hdtDocument.countTriples(subject, predicate, object)
+    // `searchBindings` reports the cardinality alongside the triples it returns, so asking for the
+    // first page establishes the metadata *and* gets the data that the first read needs.
+    // A separate `countTriples` would be a second round trip for something we are told anyway.
+    this.firstPage = this.hdtDocument.searchBindings(
+      bindingsFactory,
+      subject,
+      predicate,
+      object,
+      { offset: 0, limit: FIRST_PAGE_SIZE },
+    );
+    this.firstPage
       .then(({ totalCount, hasExactCount }) => {
         this.setProperty('metadata', {
           state: new MetadataValidationState(),
@@ -60,17 +80,21 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
       this.close();
       return done();
     }
-    this.hdtDocument.searchBindings(
+    // The first page was already fetched to determine the cardinality
+    const limit = this.firstPage ? FIRST_PAGE_SIZE : count;
+    const page = this.firstPage ?? this.hdtDocument.searchBindings(
       this.bindingsFactory,
       this.subject,
       this.predicate,
       this.object,
-      { offset: this.position, limit: count },
-    ).then((searchResult: HDT.BindingsResult) => {
+      { offset: this.position, limit },
+    );
+    this.firstPage = undefined;
+    page.then((searchResult: HDT.BindingsResult) => {
       for (const b of searchResult.bindings) {
         this._push(b);
       }
-      if (searchResult.bindings.length < count) {
+      if (searchResult.bindings.length < limit) {
         this.close();
       }
       done();
@@ -79,6 +103,6 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
         this.emit('error', error);
         return done();
       });
-    this.position += count;
+    this.position += limit;
   }
 }
