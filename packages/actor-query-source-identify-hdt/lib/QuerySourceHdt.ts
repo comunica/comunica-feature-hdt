@@ -19,6 +19,40 @@ import { HdtIterator } from './HdtIterator';
 const AF = new AlgebraFactory();
 
 /**
+ * The most bindings a single pattern may be materialised into, to bound what one query can hold in memory.
+ */
+const MAX_INDEXED_BINDINGS = 10_000;
+
+/**
+ * Materialising a pattern allocates one bindings object per triple, which costs far more than the page reads it
+ * saves, so a step must be probed a good fraction of its size before it is worth indexing.
+ */
+const INDEX_PROBE_DIVISOR = 32;
+
+/**
+ * One pattern of a join, together with what is known about how it will be evaluated.
+ */
+interface IJoinStep {
+  pattern: Algebra.Pattern;
+  /**
+   * The number of triples the pattern matches on its own.
+   */
+  count: number;
+  /**
+   * The pattern's variables that are already bound when this step runs, in other words the join key.
+   */
+  keyVariables: RDF.Variable[];
+  /**
+   * How often this step has been evaluated against a fresh set of bindings.
+   */
+  probes: number;
+  /**
+   * The pattern's bindings, grouped by join key. Only set once looking them up one by one stops paying off.
+   */
+  index?: Promise<Map<string, RDF.Bindings[]>>;
+}
+
+/**
  * A query source over an HDT file.
  */
 export class QuerySourceHdt implements IQuerySource {
@@ -104,21 +138,103 @@ export class QuerySourceHdt implements IQuerySource {
   }
 
   /**
-   * Evaluate a list of patterns as an index nested loop, in the order they were given.
-   *
-   * The caller has already ordered the patterns, so no planning happens here. Each pattern is matched with the
-   * bindings produced so far substituted in, which is the same work a bind join does, without re-entering the
-   * engine for every binding.
+   * A key that identifies a term within one document, so that bindings can be grouped by their join key.
    */
-  protected evaluatePatterns(patterns: Algebra.Pattern[], bindings: RDF.Bindings): AsyncIterator<RDF.Bindings> {
-    const head = this.evaluatePattern(patterns[0], bindings);
-    if (patterns.length === 1) {
+  protected static termKey(term: RDF.Term): string {
+    return term.termType === 'Literal' ?
+      `"${term.value}"${term.language}|${term.datatype.value}` :
+      `${term.termType}|${term.value}`;
+  }
+
+  protected static indexKey(variables: RDF.Variable[], bindings: RDF.Bindings): string | undefined {
+    const keys: string[] = [];
+    for (const variable of variables) {
+      const term = bindings.get(variable);
+      // A variable the metadata announced but that this binding leaves open cannot be looked up in the index
+      if (!term) {
+        return undefined;
+      }
+      keys.push(QuerySourceHdt.termKey(term));
+    }
+    return keys.join(' ');
+  }
+
+  /**
+   * Read a step's pattern once and group its bindings by join key.
+   */
+  protected async buildIndex(step: IJoinStep): Promise<Map<string, RDF.Bindings[]>> {
+    const index = new Map<string, RDF.Bindings[]>();
+    const all = await new HdtIterator(
+      this.hdtDocument,
+      this.bindingsFactory,
+      step.pattern.subject,
+      step.pattern.predicate,
+      step.pattern.object,
+      { autoStart: false, maxBufferSize: this.maxBufferSize },
+    ).toArray();
+    for (const bindings of all) {
+      const key = QuerySourceHdt.indexKey(step.keyVariables, bindings)!;
+      const bucket = index.get(key);
+      if (bucket) {
+        bucket.push(bindings);
+      } else {
+        index.set(key, [ bindings ]);
+      }
+    }
+    return index;
+  }
+
+  /**
+   * Evaluate one step of the join against the bindings produced so far.
+   *
+   * A step starts out as an index nested loop: one lookup per incoming binding. That is the right shape while the
+   * bindings are few, but a step reached many times ends up looking the same pattern up over and over. Reading the
+   * whole pattern once costs `count / pageSize` lookups, so once that many probes have been paid the pattern is
+   * materialised and grouped by join key, and the remaining probes are answered from memory.
+   */
+  protected evaluateStep(step: IJoinStep, bindings: RDF.Bindings): AsyncIterator<RDF.Bindings> {
+    step.probes++;
+    if (!step.index &&
+      step.keyVariables.length > 0 &&
+      step.count <= MAX_INDEXED_BINDINGS &&
+      step.probes > Math.ceil(step.count / INDEX_PROBE_DIVISOR)) {
+      step.index = this.buildIndex(step);
+    }
+
+    if (step.index) {
+      const key = QuerySourceHdt.indexKey(step.keyVariables, bindings);
+      if (key !== undefined) {
+        const index = step.index;
+        return new TransformIterator<RDF.Bindings>(
+          async() => new ArrayIterator<RDF.Bindings>(
+            // The join key is equal by construction, so merging can never conflict
+            (await index).get(key)?.map(indexed => indexed.merge(bindings)!) ?? [],
+            { autoStart: false },
+          ),
+          { autoStart: false, maxBufferSize: this.maxBufferSize },
+        );
+      }
+    }
+
+    return this.evaluatePattern(step.pattern, bindings);
+  }
+
+  /**
+   * Evaluate the steps of a join in the order they were given.
+   *
+   * The caller has already ordered them, so no planning happens here. Each step is matched with the bindings
+   * produced so far substituted in, which is the same work a bind join does, without re-entering the engine for
+   * every binding.
+   */
+  protected evaluateSteps(steps: IJoinStep[], bindings: RDF.Bindings): AsyncIterator<RDF.Bindings> {
+    const head = this.evaluateStep(steps[0], bindings);
+    if (steps.length === 1) {
       return head;
     }
-    const tail = patterns.slice(1);
+    const tail = steps.slice(1);
     return new MultiTransformIterator(head, {
       autoStart: false,
-      multiTransform: (headBindings: RDF.Bindings) => this.evaluatePatterns(tail, headBindings),
+      multiTransform: (headBindings: RDF.Bindings) => this.evaluateSteps(tail, headBindings),
     });
   }
 
@@ -155,7 +271,8 @@ export class QuerySourceHdt implements IQuerySource {
   protected async orderPatterns(
     patterns: Algebra.Pattern[],
     boundVariables: string[],
-  ): Promise<{ patterns: Algebra.Pattern[]; counts: number[] }> {
+  ): Promise<{ steps: IJoinStep[]; counts: number[] }> {
+    const dataFactory = this.dataFactory;
     const counts = await Promise.all(patterns.map(async pattern => (await this.hdtDocument.countTriples(
       pattern.subject,
       pattern.predicate,
@@ -168,7 +285,7 @@ export class QuerySourceHdt implements IQuerySource {
     }));
 
     const bound = new Set(boundVariables);
-    const ordered: Algebra.Pattern[] = [];
+    const steps: IJoinStep[] = [];
     while (remaining.length > 0) {
       let best = 0;
       for (let i = 1; i < remaining.length; i++) {
@@ -179,12 +296,19 @@ export class QuerySourceHdt implements IQuerySource {
         }
       }
       const [ chosen ] = remaining.splice(best, 1);
+      steps.push({
+        pattern: chosen.pattern,
+        count: chosen.count,
+        keyVariables: chosen.variables
+          .filter(variable => bound.has(variable))
+          .map(variable => dataFactory.variable(variable)),
+        probes: 0,
+      });
       for (const variable of chosen.variables) {
         bound.add(variable);
       }
-      ordered.push(chosen.pattern);
     }
-    return { patterns: ordered, counts };
+    return { steps, counts };
   }
 
   public queryBindings(
@@ -226,14 +350,14 @@ export class QuerySourceHdt implements IQuerySource {
       return new MultiTransformIterator(options.joinBindings.bindings, {
         autoStart: false,
         multiTransform: (bindings: RDF.Bindings) => new TransformIterator<RDF.Bindings>(
-          async() => this.evaluatePatterns((await ordered).patterns, bindings),
+          async() => this.evaluateSteps((await ordered).steps, bindings),
           { autoStart: false, maxBufferSize: this.maxBufferSize },
         ),
       });
     }
 
     const it = new TransformIterator<RDF.Bindings>(
-      async() => this.evaluatePatterns((await ordered).patterns, this.bindingsFactory.bindings([])),
+      async() => this.evaluateSteps((await ordered).steps, this.bindingsFactory.bindings([])),
       { autoStart: false, maxBufferSize: this.maxBufferSize },
     );
     this.setJoinMetadata(it, patterns, ordered);

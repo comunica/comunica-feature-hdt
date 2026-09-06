@@ -250,15 +250,16 @@ describe('QuerySourceHdt', () => {
         it('should put the smallest pattern first when nothing is bound', async() => {
           const patternSmall = AF.createPattern(DF.variable('a'), DF.namedNode('px'), DF.variable('b'));
           const patternLarge = AF.createPattern(DF.variable('c'), DF.namedNode('p'), DF.variable('d'));
-          const { patterns } = await (<any> source).orderPatterns([ patternLarge, patternSmall ], []);
-          expect(patterns).toEqual([ patternSmall, patternLarge ]);
+          const { steps } = await (<any> source).orderPatterns([ patternLarge, patternSmall ], []);
+          expect(steps.map((step: any) => step.pattern)).toEqual([ patternSmall, patternLarge ]);
         });
 
         it('should prefer a connected pattern over a smaller unconnected one', async() => {
           const connected = AF.createPattern(DF.variable('bound'), DF.namedNode('p'), DF.variable('x'));
           const smaller = AF.createPattern(DF.variable('y'), DF.namedNode('px'), DF.variable('z'));
-          const { patterns } = await (<any> source).orderPatterns([ smaller, connected ], [ 'bound' ]);
-          expect(patterns).toEqual([ connected, smaller ]);
+          const { steps } = await (<any> source).orderPatterns([ smaller, connected ], [ 'bound' ]);
+          expect(steps.map((step: any) => step.pattern)).toEqual([ connected, smaller ]);
+          expect(steps[0].keyVariables).toEqual([ DF.variable('bound') ]);
         });
       });
 
