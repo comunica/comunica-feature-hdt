@@ -3,6 +3,7 @@ import type { IActionContext } from '@comunica/types';
 import { AlgebraFactory } from '@comunica/utils-algebra';
 import { BindingsFactory } from '@comunica/utils-bindings-factory';
 import { MetadataValidationState } from '@comunica/utils-metadata';
+import { ArrayIterator } from 'asynciterator';
 import type * as HDT from 'hdt';
 import { DataFactory } from 'rdf-data-factory';
 import { QuerySourceHdt } from '../lib/QuerySourceHdt';
@@ -47,6 +48,7 @@ describe('QuerySourceHdt', () => {
           DF.variable('p'),
           DF.variable('o'),
         ],
+        joinBindings: true,
       });
     });
   });
@@ -107,6 +109,58 @@ describe('QuerySourceHdt', () => {
               },
             ],
           });
+      });
+
+      describe('with bindings joined in', () => {
+        it('should match the pattern against each of them', async() => {
+          const data = source.queryBindings(
+            AF.createPattern(DF.variable('s'), DF.namedNode('p'), DF.variable('o')),
+            ctx,
+            {
+              joinBindings: {
+                bindings: new ArrayIterator([
+                  BF.fromRecord({ s: DF.namedNode('s2'), extra: DF.namedNode('e') }),
+                  BF.fromRecord({ s: DF.namedNode('s1') }),
+                ], { autoStart: false }),
+                metadata: <any> { variables: [{ variable: DF.variable('s'), canBeUndef: false }]},
+              },
+            },
+          );
+          await expect(data).toEqualBindingsStream([
+            BF.fromRecord({ s: DF.namedNode('s2'), o: DF.namedNode('o2'), extra: DF.namedNode('e') }),
+            BF.fromRecord({ s: DF.namedNode('s1'), o: DF.namedNode('o1') }),
+          ]);
+        });
+
+        it('should leave variables the bindings do not cover unbound', async() => {
+          const data = source.queryBindings(
+            AF.createPattern(DF.variable('s'), DF.variable('p'), DF.namedNode('o1')),
+            ctx,
+            {
+              joinBindings: {
+                bindings: new ArrayIterator([ BF.fromRecord({}) ], { autoStart: false }),
+                metadata: <any> { variables: []},
+              },
+            },
+          );
+          await expect(data).toEqualBindingsStream([
+            BF.fromRecord({ s: DF.namedNode('s1'), p: DF.namedNode('p') }),
+          ]);
+        });
+
+        it('should not match a named graph', async() => {
+          const data = source.queryBindings(
+            AF.createPattern(DF.variable('s'), DF.namedNode('p'), DF.variable('o'), DF.namedNode('g1')),
+            ctx,
+            {
+              joinBindings: {
+                bindings: new ArrayIterator([ BF.fromRecord({}) ], { autoStart: false }),
+                metadata: <any> { variables: []},
+              },
+            },
+          );
+          await expect(data).toEqualBindingsStream([]);
+        });
       });
 
       it('should not return triples in a named graph', async() => {

@@ -3,6 +3,7 @@ import type {
   ComunicaDataFactory,
   FragmentSelectorShape,
   IActionContext,
+  IQueryBindingsOptions,
   IQuerySource,
 } from '@comunica/types';
 import { Algebra, isKnownOperation, AlgebraFactory } from '@comunica/utils-algebra';
@@ -10,7 +11,7 @@ import type { BindingsFactory } from '@comunica/utils-bindings-factory';
 import { MetadataValidationState } from '@comunica/utils-metadata';
 import type * as RDF from '@rdfjs/types';
 import type { AsyncIterator } from 'asynciterator';
-import { ArrayIterator } from 'asynciterator';
+import { ArrayIterator, MultiTransformIterator } from 'asynciterator';
 import type * as HDT from 'hdt';
 import { HdtIterator } from './HdtIterator';
 
@@ -56,7 +57,8 @@ export class QuerySourceHdt implements IQuerySource {
         this.dataFactory.variable('p'),
         this.dataFactory.variable('o'),
       ],
-    }; ;
+      joinBindings: true,
+    };
   }
 
   public async getFilterFactor(_context: IActionContext): Promise<number> {
@@ -67,9 +69,51 @@ export class QuerySourceHdt implements IQuerySource {
     return this.selectorShape;
   }
 
-  public queryBindings(operation: Algebra.Operation, _context: IActionContext): BindingsStream {
+  /**
+   * Bind a pattern term against the given bindings, leaving unbound variables in place.
+   */
+  protected static bindTerm(term: RDF.Term, bindings: RDF.Bindings): RDF.Term {
+    return term.termType === 'Variable' ? bindings.get(term) ?? term : term;
+  }
+
+  /**
+   * Match the pattern once per incoming binding, merging each binding into its own results.
+   *
+   * This is the whole point of accepting join bindings: a bind join would otherwise re-enter the query engine for
+   * every binding of its left stream, re-planning an operation whose shape never changes. Here each binding costs a
+   * term substitution and a lookup.
+   */
+  protected queryBindingsJoined(
+    pattern: Algebra.Pattern,
+    joinBindings: NonNullable<IQueryBindingsOptions['joinBindings']>,
+  ): BindingsStream {
+    return new MultiTransformIterator(joinBindings.bindings, {
+      autoStart: false,
+      maxBufferSize: this.maxBufferSize,
+      multiTransform: (bindings: RDF.Bindings) => new HdtIterator(
+        this.hdtDocument,
+        this.bindingsFactory,
+        QuerySourceHdt.bindTerm(pattern.subject, bindings),
+        QuerySourceHdt.bindTerm(pattern.predicate, bindings),
+        QuerySourceHdt.bindTerm(pattern.object, bindings),
+        { autoStart: false, maxBufferSize: this.maxBufferSize },
+      )
+        // Every variable these bindings cover was substituted above, so the two can never conflict
+        .map(subBindings => subBindings.merge(bindings)!),
+    });
+  }
+
+  public queryBindings(
+    operation: Algebra.Operation,
+    _context: IActionContext,
+    options?: IQueryBindingsOptions,
+  ): BindingsStream {
     if (!isKnownOperation(operation, Algebra.Types.PATTERN)) {
       throw new Error(`Attempted to pass non-pattern operation '${operation.type}' to QuerySourceRdfJs`);
+    }
+
+    if (options?.joinBindings && operation.graph.termType !== 'NamedNode') {
+      return this.queryBindingsJoined(operation, options.joinBindings);
     }
 
     let it: AsyncIterator<RDF.Bindings>;
