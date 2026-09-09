@@ -65,6 +65,7 @@ describe('ActorQuerySourceIdentifyHdt', () => {
         httpInvalidator,
         mediatorMergeBindingsContext,
         maxBufferSize: 128,
+        pageSize: 8192,
       });
     });
 

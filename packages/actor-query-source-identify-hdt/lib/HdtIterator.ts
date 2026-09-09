@@ -14,8 +14,10 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
   protected readonly subject: RDF.Term;
   protected readonly predicate: RDF.Term;
   protected readonly object: RDF.Term;
+  protected readonly pageSize: number;
 
   protected position: number;
+  protected nextPageSize: number;
 
   public constructor(
     hdtDocument: HDT.Document,
@@ -23,15 +25,23 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
     subject: RDF.Term,
     predicate: RDF.Term,
     object: RDF.Term,
-    options: BufferedIteratorOptions,
+    options: BufferedIteratorOptions & {
+      /**
+       * The number of triples to request from the HDT document in a single call.
+       * Larger pages cost fewer seeks into the document, at the cost of reading further ahead.
+       */
+      pageSize?: number;
+    },
   ) {
     super(options);
+    this.pageSize = options.pageSize ?? 0;
     this.hdtDocument = hdtDocument;
     this.bindingsFactory = bindingsFactory;
     this.subject = subject;
     this.predicate = predicate;
     this.object = object;
     this.position = 0;
+    this.nextPageSize = 0;
 
     const variables: MetadataVariable[] = [];
     if (subject.termType === 'Variable') {
@@ -60,17 +70,20 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
       this.close();
       return done();
     }
+    // Read a page instead of just the items that are needed right now.
+    const limit = Math.max(count, Math.min(this.pageSize, this.nextPageSize));
+    this.nextPageSize = limit * 2;
     this.hdtDocument.searchBindings(
       this.bindingsFactory,
       this.subject,
       this.predicate,
       this.object,
-      { offset: this.position, limit: count },
+      { offset: this.position, limit },
     ).then((searchResult: HDT.BindingsResult) => {
       for (const b of searchResult.bindings) {
         this._push(b);
       }
-      if (searchResult.bindings.length < count) {
+      if (searchResult.bindings.length < limit) {
         this.close();
       }
       done();
@@ -79,6 +92,6 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
         this.emit('error', error);
         return done();
       });
-    this.position += count;
+    this.position += limit;
   }
 }

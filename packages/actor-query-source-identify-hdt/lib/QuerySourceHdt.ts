@@ -26,6 +26,7 @@ export class QuerySourceHdt implements IQuerySource {
   private readonly dataFactory: ComunicaDataFactory;
   private readonly bindingsFactory: BindingsFactory;
   private readonly maxBufferSize: number;
+  private readonly pageSize: number;
   private readonly selectorShape: FragmentSelectorShape;
 
   public constructor(
@@ -34,6 +35,7 @@ export class QuerySourceHdt implements IQuerySource {
     dataFactory: ComunicaDataFactory,
     bindingsFactory: BindingsFactory,
     maxBufferSize: number,
+    pageSize: number,
   ) {
     this.hdtPath = hdtPath;
     this.referenceValue = hdtPath;
@@ -41,6 +43,7 @@ export class QuerySourceHdt implements IQuerySource {
     this.dataFactory = dataFactory;
     this.bindingsFactory = bindingsFactory;
     this.maxBufferSize = maxBufferSize;
+    this.pageSize = pageSize;
     this.selectorShape = {
       type: 'operation',
       operation: {
@@ -88,7 +91,7 @@ export class QuerySourceHdt implements IQuerySource {
         operation.subject,
         operation.predicate,
         operation.object,
-        { autoStart: false, maxBufferSize: this.maxBufferSize },
+        { autoStart: false, maxBufferSize: this.maxBufferSize, pageSize: this.pageSize },
       );
     }
 

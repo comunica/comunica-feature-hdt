@@ -31,6 +31,7 @@ describe('QuerySourceHdt', () => {
       DF,
       BF,
       128,
+      8192,
     );
   });
 
