@@ -42,7 +42,8 @@ and should only be used by <a href="https://comunica.dev/docs/modify/">developer
 <ul>
 <li><code>httpInvalidator</code>: An optional actor that listens to HTTP invalidation events.</li>
 <li><code>mediatorMergeBindingsContext</code>: A mediator over the <a href="https://github.com/comunica/comunica/tree/master/packages/bus-merge-bindings-context">Merge Bindings Context bus</a>.</li>
-<li><code>maxBufferSize</code>: The maximum number of triples that can be retrieved from HDT files in a single call, defaults to <code>128</code>.</li>
+<li><code>maxBufferSize</code>: The number of bindings this actor's iterators buffer ahead of their consumer, defaults to <code>128</code>.</li>
+<li><code>pageSize</code>: The number of triples to request from an HDT document in a single call, defaults to <code>8192</code>. Every call seeks to its offset inside the document, and for patterns with a bound predicate that seek is linear in the offset, so small pages make a full traversal quadratic.</li>
 </ul>
 </section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Classes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
