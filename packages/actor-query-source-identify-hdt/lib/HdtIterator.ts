@@ -71,12 +71,6 @@ export class HdtIterator extends BufferedIterator<RDF.Bindings> {
       return done();
     }
     // Read a page instead of just the items that are needed right now.
-    // Every call seeks to `offset` inside the document, and for patterns with a bound predicate
-    // that seek is linear in the offset, so reading a pattern in the buffer-sized chunks that
-    // asynciterator asks for (at most 128) makes a full traversal quadratic.
-    // The surplus is kept in this iterator's buffer, which throttles the next call by itself.
-    // The page starts at what the consumer asked for and doubles towards `pageSize`, so that
-    // queries that only read a handful of results never pay for a full page.
     const limit = Math.max(count, Math.min(this.pageSize, this.nextPageSize));
     this.nextPageSize = limit * 2;
     this.hdtDocument.searchBindings(

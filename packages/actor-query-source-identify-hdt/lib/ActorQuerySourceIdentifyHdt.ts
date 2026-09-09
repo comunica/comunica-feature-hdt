@@ -31,7 +31,7 @@ export class ActorQuerySourceIdentifyHdt extends ActorQuerySourceIdentify {
     this.httpInvalidator = args.httpInvalidator;
     this.mediatorMergeBindingsContext = args.mediatorMergeBindingsContext;
     this.maxBufferSize = args.maxBufferSize;
-    this.pageSize = args.pageSize;
+    this.pageSize = args.pageSize ?? 8192;
     this.httpInvalidator.addInvalidateListener(
       ({ url }: IActionHttpInvalidate) => {
         if (!url) {
@@ -99,6 +99,7 @@ export interface IActorQuerySourceIdentifyHdtArgs extends IActorQuerySourceIdent
    * @default {128}
    */
   maxBufferSize: number;
+  // TODO: make mandatory in next/major.
   /**
    * The number of triples to request from an HDT document in a single call.
    * Every call seeks to its offset inside the document, and for patterns with a bound predicate
@@ -106,5 +107,5 @@ export interface IActorQuerySourceIdentifyHdtArgs extends IActorQuerySourceIdent
    * @range {integer}
    * @default {8192}
    */
-  pageSize: number;
+  pageSize?: number;
 }
