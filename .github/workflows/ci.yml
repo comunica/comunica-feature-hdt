@@ -113,6 +113,7 @@ jobs:
           - watdiv-hdt
           - watdiv-hdt-100
           - bsbm-hdt
+          - bsbm-hdt-10k
     needs:
       - test
       - lint
@@ -155,10 +156,14 @@ jobs:
         with:
           name: performance-benchmark-bsbm-hdt
           path: performance/benchmark-bsbm-hdt/combinations/combination_0/output/
+      - uses: actions/download-artifact@v8
+        with:
+          name: performance-benchmark-bsbm-hdt-10k
+          path: performance/benchmark-bsbm-hdt-10k/combinations/combination_0/output/
       - name: Process benchmark detailed results
-        run: npx -p @rubensworks/process-sparql-benchmark-results psbr csv ghbench performance/benchmark-watdiv-hdt/combinations/combination_0/output/ performance/benchmark-watdiv-hdt-100/combinations/combination_0/output/ performance/benchmark-bsbm-hdt/combinations/combination_0/output/ --overrideCombinationLabels WatDiv-HDT,WatDiv-HDT-100,BSBM-HDT --total false --detailed true --name ghbench-detail.json
+        run: npx -p @rubensworks/process-sparql-benchmark-results psbr csv ghbench performance/benchmark-watdiv-hdt/combinations/combination_0/output/ performance/benchmark-watdiv-hdt-100/combinations/combination_0/output/ performance/benchmark-bsbm-hdt/combinations/combination_0/output/ performance/benchmark-bsbm-hdt-10k/combinations/combination_0/output/ --overrideCombinationLabels WatDiv-HDT,WatDiv-HDT-100,BSBM-HDT,BSBM-HDT-10k --total false --detailed true --name ghbench-detail.json
       - name: Process benchmark total results
-        run: npx -p @rubensworks/process-sparql-benchmark-results psbr csv ghbench performance/benchmark-watdiv-hdt/combinations/combination_0/output/ performance/benchmark-watdiv-hdt-100/combinations/combination_0/output/ performance/benchmark-bsbm-hdt/combinations/combination_0/output/ --overrideCombinationLabels WatDiv-HDT,WatDiv-HDT-100,BSBM-HDT --total true --detailed false --name ghbench-total.json
+        run: npx -p @rubensworks/process-sparql-benchmark-results psbr csv ghbench performance/benchmark-watdiv-hdt/combinations/combination_0/output/ performance/benchmark-watdiv-hdt-100/combinations/combination_0/output/ performance/benchmark-bsbm-hdt/combinations/combination_0/output/ performance/benchmark-bsbm-hdt-10k/combinations/combination_0/output/ --overrideCombinationLabels WatDiv-HDT,WatDiv-HDT-100,BSBM-HDT,BSBM-HDT-10k --total true --detailed false --name ghbench-total.json
       - name: Determine benchmark detailed results target directory name
         run: echo "BENCHMARK_DATA_DIR_PATH_DETAIL=comunica-feature-hdt/${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}/benchmarks-detail" >> $GITHUB_ENV
       - name: Determine benchmarks total results target directory name
