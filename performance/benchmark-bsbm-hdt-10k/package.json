@@ -1,5 +1,5 @@
 {
-  "name": "benchmark-bsbm-hdt-large",
+  "name": "benchmark-bsbm-hdt-10k",
   "version": "5.0.0",
   "private": true,
   "scripts": {

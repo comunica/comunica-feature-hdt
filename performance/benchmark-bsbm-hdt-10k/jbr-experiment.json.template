@@ -5,7 +5,7 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/sparql-endpoint-comunica/^6.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/cli/^6.0.0/components/context.jsonld"
   ],
-  "@id": "urn:jbr:benchmark-bsbm-hdt-large",
+  "@id": "urn:jbr:benchmark-bsbm-hdt-10k",
   "@type": "ExperimentBsbm",
   "productCount": 10000,
   "generateHdt": true,

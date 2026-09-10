@@ -1,8 +1,8 @@
-# Benchmark BSBM HDT Large
+# Benchmark BSBM HDT 10k
 
 This internal package benchmarks Comunica HDT using the [BSBM](http://wbsg.informatik.uni-mannheim.de/bizer/berlinsparqlbenchmark/) benchmark,
-at a dataset an order of magnitude larger than [`benchmark-bsbm-hdt`](../benchmark-bsbm-hdt):
-10 000 products instead of 1 000, which is 3 564 773 triples instead of 374 911.
+at 10 000 products instead of the 1 000 used by [`benchmark-bsbm-hdt`](../benchmark-bsbm-hdt),
+which is 3 564 773 triples instead of 374 911.
 
 The smaller variant stays as it is. It gives fast feedback and a long history, and the two answer
 different questions: at 1 000 products the whole query set runs in a fraction of a second, so what it

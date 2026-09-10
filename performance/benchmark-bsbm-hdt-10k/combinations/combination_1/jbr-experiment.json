@@ -5,7 +5,7 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/sparql-endpoint-comunica/^6.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/cli/^6.0.0/components/context.jsonld"
   ],
-  "@id": "urn:jbr:benchmark-bsbm-hdt-large:combination_1",
+  "@id": "urn:jbr:benchmark-bsbm-hdt-10k:combination_1",
   "@type": "ExperimentBsbm",
   "productCount": 10000,
   "generateHdt": true,
@@ -13,5 +13,5 @@
   "endpointUrlExternal": "http://localhost:3001/sparql",
   "warmupRuns": 5,
   "runs": 10,
-  "hookSparqlEndpoint": { "@id": "urn:jbr:benchmark-bsbm-hdt-large:hookSparqlEndpoint", "@type": "HookSparqlEndpointComunica", "dockerfileClient": "input/dockerfiles/Dockerfile-client", "resourceConstraints": { "@type": "StaticDockerResourceConstraints", "cpu_percentage": 100 }, "configClient": "input/config-client.json", "contextClient": "input/context-client.json", "additionalBinds": ["/generated/dataset.nt:/tmp/dataset.nt"], "clientPort": 3001, "clientLogLevel": "info", "maxMemory": 8192 }
+  "hookSparqlEndpoint": { "@id": "urn:jbr:benchmark-bsbm-hdt-10k:hookSparqlEndpoint", "@type": "HookSparqlEndpointComunica", "dockerfileClient": "input/dockerfiles/Dockerfile-client", "resourceConstraints": { "@type": "StaticDockerResourceConstraints", "cpu_percentage": 100 }, "configClient": "input/config-client.json", "contextClient": "input/context-client.json", "additionalBinds": ["/generated/dataset.nt:/tmp/dataset.nt"], "clientPort": 3001, "clientLogLevel": "info", "maxMemory": 8192 }
 }

@@ -5,7 +5,7 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/sparql-endpoint-comunica/^6.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/cli/^6.0.0/components/context.jsonld"
   ],
-  "@id": "urn:jbr:benchmark-bsbm-hdt-large:combination_0",
+  "@id": "urn:jbr:benchmark-bsbm-hdt-10k:combination_0",
   "@type": "ExperimentBsbm",
   "productCount": 10000,
   "generateHdt": true,
@@ -13,5 +13,5 @@
   "endpointUrlExternal": "http://localhost:3001/sparql",
   "warmupRuns": 5,
   "runs": 10,
-  "hookSparqlEndpoint": { "@id": "urn:jbr:benchmark-bsbm-hdt-large:hookSparqlEndpoint", "@type": "HookCli", "entrypoint": ["node", "../../engines/query-sparql-hdt/bin/http.js", "hdt@generated/dataset.hdt", "-p", "3001"], "statsFilePath": "output/stats.csv" }
+  "hookSparqlEndpoint": { "@id": "urn:jbr:benchmark-bsbm-hdt-10k:hookSparqlEndpoint", "@type": "HookCli", "entrypoint": ["node", "../../engines/query-sparql-hdt/bin/http.js", "hdt@generated/dataset.hdt", "-p", "3001"], "statsFilePath": "output/stats.csv" }
 }
