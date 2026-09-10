@@ -5,7 +5,7 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/sparql-endpoint-comunica/^6.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@jbr-hook/cli/^6.0.0/components/context.jsonld"
   ],
-  "@id": "urn:jbr:benchmark-watdiv-hdt-large",
+  "@id": "urn:jbr:benchmark-watdiv-hdt-100:combination_0",
   "@type": "ExperimentWatDiv",
   "datasetScale": 100,
   "queryCount": 5,
@@ -17,5 +17,5 @@
   "queryRunnerRequestDelay": 0,
   "queryRunnerEndpointAvailabilityCheckTimeout": 1000,
   "queryRunnerUrlParams": {},
-  "hookSparqlEndpoint": %FACTOR-hookSparqlEndpoint%
+  "hookSparqlEndpoint": { "@id": "urn:jbr:benchmark-watdiv-hdt-100:hookSparqlEndpoint", "@type": "HookCli", "entrypoint": ["node", "../../engines/query-sparql-hdt/bin/http.js", "hdt@generated/dataset.hdt", "-p", "3001", "-t", "500"], "statsFilePath": "output/stats.csv" }
 }

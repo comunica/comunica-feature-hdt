@@ -1,4 +1,4 @@
-# Benchmark WatDiv HDT Large
+# Benchmark WatDiv HDT 100
 
 This internal package benchmarks Comunica HDT using the [WatDiv](https://dsg.uwaterloo.ca/watdiv/) benchmark,
 at scale 100 instead of the scale 10 used by [`benchmark-watdiv-hdt`](../benchmark-watdiv-hdt):

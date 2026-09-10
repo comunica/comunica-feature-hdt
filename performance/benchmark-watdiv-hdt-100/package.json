@@ -1,5 +1,5 @@
 {
-  "name": "benchmark-watdiv-hdt-large",
+  "name": "benchmark-watdiv-hdt-100",
   "version": "5.0.0",
   "private": true,
   "scripts": {
