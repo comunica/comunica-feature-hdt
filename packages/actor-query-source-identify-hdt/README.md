@@ -2,7 +2,9 @@
 
 [![npm version](https://badge.fury.io/js/%40comunica%2Factor-query-source-identify-hdt.svg)](https://www.npmjs.com/package/@comunica/actor-query-source-identify-hdt)
 
-A [Query Source Identify](https://github.com/comunica/comunica/tree/master/packages/bus-query-source-identify) actor that handles [HDT files](https://www.rdfhdt.org/).
+A [Query Source Identify](https://github.com/comunica/comunica/tree/master/packages/bus-query-source-identify) actor that handles [HDT files](https://www.rdfhdt.org/),
+which can be local files, or remote files that are read via HTTP Range requests.
+HDT files are read via [hdt.js](https://github.com/rubensworks/hdt.js).
 
 This module is part of the [Comunica framework](https://github.com/comunica/comunica),
 and should only be used by [developers that want to build their own query engine](https://comunica.dev/docs/modify/).
@@ -29,7 +31,8 @@ After installing, this package can be added to your engine's configuration as fo
     {
       "@id": "urn:comunica:default:query-source-identify/actors#hdt",
       "@type": "ActorQuerySourceIdentifyHdt",
-      "mediatorMergeBindingsContext": { "@id": "urn:comunica:default:merge-bindings-context/mediators#main" }
+      "mediatorMergeBindingsContext": { "@id": "urn:comunica:default:merge-bindings-context/mediators#main" },
+      "mediatorHttp": { "@id": "urn:comunica:default:http/mediators#main" }
     }
   ]
 }
@@ -39,5 +42,4 @@ After installing, this package can be added to your engine's configuration as fo
 
 * `httpInvalidator`: An optional actor that listens to HTTP invalidation events.
 * `mediatorMergeBindingsContext`: A mediator over the [Merge Bindings Context bus](https://github.com/comunica/comunica/tree/master/packages/bus-merge-bindings-context).
-* `maxBufferSize`: The number of bindings this actor's iterators buffer ahead of their consumer, defaults to `128`.
-* `pageSize`: The number of triples to request from an HDT document in a single call, defaults to `8192`. Every call seeks to its offset inside the document, and for patterns with a bound predicate that seek is linear in the offset, so small pages make a full traversal quadratic.
+* `mediatorHttp`: A mediator over the [HTTP bus](https://github.com/comunica/comunica/tree/master/packages/bus-http), via which remote HDT files are read.

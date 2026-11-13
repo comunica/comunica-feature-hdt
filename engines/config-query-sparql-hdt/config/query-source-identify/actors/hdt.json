@@ -10,7 +10,8 @@
     {
       "@id": "urn:comunica:default:query-source-identify/actors#hdt",
       "@type": "ActorQuerySourceIdentifyHdt",
-      "mediatorMergeBindingsContext": { "@id": "urn:comunica:default:merge-bindings-context/mediators#main" }
+      "mediatorMergeBindingsContext": { "@id": "urn:comunica:default:merge-bindings-context/mediators#main" },
+      "mediatorHttp": { "@id": "urn:comunica:default:http/mediators#main" }
     }
   ]
 }

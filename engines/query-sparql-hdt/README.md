@@ -5,7 +5,8 @@
 
 Comunica SPARQL Solid is a SPARQL query engine for JavaScript that can query over [HDT files](https://www.rdfhdt.org/), which are highly compressed files for storing large RDF datasets.
 
-This package can only be used within Node.js, and **it does NOT work within browser environments**.
+HDT files can be local files, or remote files over HTTP(S), of which only the needed parts are downloaded via Range requests.
+HDT files are read via [hdt.js](https://github.com/rubensworks/hdt.js), a pure JavaScript implementation.
 
 This module is part of the [Comunica framework](https://comunica.dev/).
 [Click here to learn more about Comunica and HDT](https://comunica.dev/docs/query/advanced/hdt/).
@@ -29,6 +30,16 @@ Show 100 triples from the HDT file stored at `datasets/dataset-100M.hdt`:
 ```bash
 $ comunica-sparql-hdt hdt@datasets/dataset-100M.hdt "CONSTRUCT WHERE { ?s ?p ?o } LIMIT 100"
 ```
+
+Query a remote HDT file, of which only the needed parts are downloaded:
+
+```bash
+$ comunica-sparql-hdt hdt@https://example.org/dataset.hdt "SELECT * WHERE { ?s ?p ?o } LIMIT 100"
+```
+
+The server must support Range requests, and in browsers also allow the `range` request header
+and expose the `content-range` response header via CORS.
+If an hdt-cpp index (`dataset.hdt.index.v1-1`) exists next to the HDT file, it is used for patterns with unbound subjects.
 
 Show the help with all options:
 

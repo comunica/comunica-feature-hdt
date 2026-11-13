@@ -41,6 +41,8 @@
     "build:components": "componentsjs-generator"
   },
   "dependencies": {
+    "@comunica/actor-query-source-identify-rdfjs": "^5.4.0",
+    "@comunica/bus-http": "^5.4.0",
     "@comunica/bus-http-invalidate": "^5.4.0",
     "@comunica/bus-merge-bindings-context": "^5.4.0",
     "@comunica/bus-query-source-identify": "^5.4.0",
@@ -52,6 +54,6 @@
     "@comunica/utils-metadata": "^5.4.0",
     "@rdfjs/types": "*",
     "asynciterator": "^3.10.0",
-    "hdt": "^3.3.2"
+    "hdt-js": "github:rubensworks/hdt.js"
   }
 }
