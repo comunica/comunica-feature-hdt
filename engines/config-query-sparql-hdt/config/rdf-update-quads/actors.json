@@ -1,0 +1,8 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql-hdt/^5.0.0/components/context.jsonld"
+  ],
+  "import": [
+    "ccqsh:config/rdf-update-quads/actors/hdt.json"
+  ]
+}

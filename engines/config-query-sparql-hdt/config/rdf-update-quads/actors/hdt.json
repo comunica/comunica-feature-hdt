@@ -1,0 +1,17 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/runner/^5.0.0/components/context.jsonld",
+
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-update-quads-hdt/^5.0.0/components/context.jsonld"
+  ],
+  "@id": "urn:comunica:default:Runner",
+  "@type": "Runner",
+  "actors": [
+    {
+      "@id": "urn:comunica:default:rdf-update-quads/actors#hdt",
+      "@type": "ActorRdfUpdateQuadsHdt",
+      "mediatorHttpInvalidate": { "@id": "urn:comunica:default:http-invalidate/mediators#main" },
+      "beforeActors": { "@id": "urn:comunica:default:rdf-update-quads/actors#hypermedia" }
+    }
+  ]
+}

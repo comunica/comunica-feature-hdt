@@ -70,6 +70,7 @@
     "ccqs:config/rdf-update-hypermedia/actors.json",
     "ccqs:config/rdf-update-hypermedia/mediators.json",
     "ccqs:config/rdf-update-quads/actors.json",
+    "ccqsh:config/rdf-update-quads/actors.json",
     "ccqs:config/rdf-update-quads/mediators.json",
     "ccqs:config/term-comparator-factory/actors.json",
     "ccqs:config/term-comparator-factory/mediators.json"

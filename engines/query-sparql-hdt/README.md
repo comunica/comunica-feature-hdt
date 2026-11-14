@@ -41,6 +41,16 @@ The server must support Range requests, and in browsers also allow the `range` r
 and expose the `content-range` response header via CORS.
 If an hdt-cpp index (`dataset.hdt.index.v1-1`) exists next to the HDT file, it is used for patterns with unbound subjects.
 
+Local HDT files can also be updated with SPARQL UPDATE queries:
+
+```bash
+$ comunica-sparql-hdt hdt@datasets/dataset.hdt "INSERT DATA { <ex:s> <ex:p> <ex:o> }"
+```
+
+Since HDT files are read-only by design, each update rewrites the whole file, and its index if it exists,
+which takes time linear in the size of the file.
+HDT files only have a default graph, so quads cannot be inserted in named graphs.
+
 Show the help with all options:
 
 ```bash
