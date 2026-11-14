@@ -54,6 +54,6 @@
     "@comunica/utils-metadata": "^5.4.0",
     "@rdfjs/types": "*",
     "asynciterator": "^3.10.0",
-    "hdt-js": "github:rubensworks/hdt.js#updatable-dataset"
+    "hdt-js": "github:rubensworks/hdt.js"
   }
 }
