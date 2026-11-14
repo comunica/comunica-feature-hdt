@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { QuerySourceRdfJs } from '@comunica/actor-query-source-identify-rdfjs';
 import type { ActorHttpInvalidateListenable } from '@comunica/bus-http-invalidate';
@@ -7,6 +8,7 @@ import { KeysInitQuery } from '@comunica/context-entries';
 import { ActionContext, Bus } from '@comunica/core';
 import type { BindingsStream, IActionContext } from '@comunica/types';
 import { AlgebraFactory } from '@comunica/utils-algebra';
+import { HdtDataset, HdtDatasetSource } from 'hdt-js';
 import { DataFactory } from 'rdf-data-factory';
 import { ActorQuerySourceIdentifyHdt } from '../lib/ActorQuerySourceIdentifyHdt';
 import '@comunica/utils-jest';
@@ -146,6 +148,26 @@ describe('ActorQuerySourceIdentifyHdt', () => {
           context,
         });
         expect(querySource.context).toBe(sourceContext);
+      });
+
+      it('should get a source for a local dataset, which follows its generations', async() => {
+        const directory = mkdtempSync(join(tmpdir(), 'hdt-dataset-'));
+        const dataset = await HdtDataset.import(directory, PATH);
+        const { querySource } = await actor
+          .run({ querySourceUnidentified: { type: 'hdt', value: directory }, context });
+        expect(querySource.source).toBeInstanceOf(QuerySourceRdfJs);
+        expect((<any> querySource.source).source).toBeInstanceOf(HdtDatasetSource);
+        await expect(subjects(querySource.source.queryBindings(pattern, context))).resolves
+          .toEqual([ 'b1', 'http://ex.org/o1', 'http://ex.org/s1', 'http://ex.org/s1' ]);
+        // Another instance of the dataset updates it
+        await dataset.update({ insert: [
+          DF.quad(DF.namedNode('http://ex.org/new'), DF.namedNode('http://ex.org/p1'), DF.namedNode('http://ex.org/o1')),
+        ]});
+        await expect(subjects(querySource.source.queryBindings(pattern, context))).resolves
+          .toEqual([ 'b1', 'http://ex.org/new', 'http://ex.org/o1', 'http://ex.org/s1', 'http://ex.org/s1' ]);
+        // Datasets are not closed when caches are cleared
+        listener({});
+        await expect(subjects(querySource.source.queryBindings(pattern, context))).resolves.toHaveLength(5);
       });
 
       it('should reject for files that do not exist', async() => {

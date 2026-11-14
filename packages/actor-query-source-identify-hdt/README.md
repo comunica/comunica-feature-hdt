@@ -3,7 +3,9 @@
 [![npm version](https://badge.fury.io/js/%40comunica%2Factor-query-source-identify-hdt.svg)](https://www.npmjs.com/package/@comunica/actor-query-source-identify-hdt)
 
 A [Query Source Identify](https://github.com/comunica/comunica/tree/master/packages/bus-query-source-identify) actor that handles [HDT files](https://www.rdfhdt.org/),
-which can be local files, or remote files that are read via HTTP Range requests.
+which can be local files, or remote files that are read via HTTP Range requests,
+and local directories with an updatable dataset of HDT files,
+of which generations that other processes commit are picked up before queries.
 HDT files are read via [hdt.js](https://github.com/rubensworks/hdt.js).
 
 This module is part of the [Comunica framework](https://github.com/comunica/comunica),

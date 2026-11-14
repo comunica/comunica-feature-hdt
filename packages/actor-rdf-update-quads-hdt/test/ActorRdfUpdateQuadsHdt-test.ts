@@ -7,7 +7,7 @@ import { ActionContext, Bus } from '@comunica/core';
 import type { IActionContext } from '@comunica/types';
 import type * as RDF from '@rdfjs/types';
 import { ArrayIterator } from 'asynciterator';
-import { HdtDocument } from 'hdt-js';
+import { HdtDataset, HdtDocument } from 'hdt-js';
 import { DataFactory } from 'rdf-data-factory';
 import { ActorRdfUpdateQuadsHdt } from '../lib/ActorRdfUpdateQuadsHdt';
 import { defaultGraphQuads } from '../lib/HdtQuadDestination';
@@ -63,7 +63,7 @@ describe('ActorRdfUpdateQuadsHdt', () => {
   beforeEach(() => {
     bus = new Bus({ name: 'bus' });
     mediatorHttpInvalidate = { mediate: jest.fn(async() => ({})) };
-    actor = new ActorRdfUpdateQuadsHdt({ name: 'actor', bus, mediatorHttpInvalidate });
+    actor = new ActorRdfUpdateQuadsHdt({ name: 'actor', bus, mediatorHttpInvalidate, isolation: 'serializable' });
     directory = mkdtempSync(join(tmpdir(), 'hdt-update-'));
     path = join(directory, 'edge.hdt');
     copyFileSync(join(ASSETS, 'edge.hdt'), path);
@@ -209,6 +209,85 @@ describe('ActorRdfUpdateQuadsHdt', () => {
       await expect(update(undefined, [])).rejects.toThrow('index failure');
       expect(readdirSync(directory).sort()).toEqual([ 'edge.hdt', 'edge.hdt.index', 'edge.hdt.index.v1-1' ]);
     });
+  });
+});
+
+describe('ActorRdfUpdateQuadsHdt with datasets', () => {
+  let mediatorHttpInvalidate: any;
+  let actor: ActorRdfUpdateQuadsHdt;
+  let directory: string;
+
+  async function run(action: Record<string, any>): Promise<void> {
+    const { execute } = await actor.run(<any> {
+      ...action,
+      context: new ActionContext({
+        [KeysInitQuery.dataFactory.name]: DF,
+        [KeysRdfUpdateQuads.destination.name]: { type: 'hdt', value: directory },
+      }),
+    });
+    await execute();
+  }
+
+  async function datasetQuads(): Promise<string[]> {
+    const dataset = await HdtDataset.open(directory);
+    const quads = (await dataset.source.match().toArray())
+      .map(quad => `${quad.subject.value} ${quad.predicate.value} ${quad.object.value}`).sort();
+    await dataset.close();
+    return quads;
+  }
+
+  beforeEach(async() => {
+    mediatorHttpInvalidate = { mediate: jest.fn(async() => ({})) };
+    actor = new ActorRdfUpdateQuadsHdt({
+      name: 'actor',
+      bus: new Bus({ name: 'bus' }),
+      mediatorHttpInvalidate,
+      isolation: 'snapshot',
+    });
+    directory = mkdtempSync(join(tmpdir(), 'hdt-dataset-'));
+    await (await HdtDataset.import(directory, join(ASSETS, 'edge.hdt'))).close();
+  });
+
+  it('should delete and insert quads', async() => {
+    const original = await datasetQuads();
+    const [ subject, predicate, object ] = [ 's1', 'p1', 'o1' ].map(name => `http://ex.org/${name}`);
+    await run({
+      quadStreamInsert: new ArrayIterator([ DF.quad(DF.namedNode(`${EX}s`), DF.namedNode(`${EX}p`), DF.literal('o')) ]),
+      quadStreamDelete: new ArrayIterator([
+        DF.quad(DF.namedNode(subject), DF.namedNode(predicate), DF.namedNode(object)),
+        DF.quad(DF.namedNode(subject), DF.namedNode(predicate), DF.namedNode(object), DF.namedNode(`${EX}g`)),
+      ]),
+    });
+    await expect(datasetQuads()).resolves.toEqual([
+      ...original.filter(quad => quad !== `${subject} ${predicate} ${object}`),
+      `${EX}s ${EX}p o`,
+    ].sort());
+    expect(mediatorHttpInvalidate.mediate).toHaveBeenCalledWith({ url: directory, context: expect.anything() });
+  });
+
+  it('should not invalidate sources if nothing changed', async() => {
+    await run({ quadStreamDelete: new ArrayIterator<RDF.Quad>([]) });
+    expect(mediatorHttpInvalidate.mediate).not.toHaveBeenCalled();
+  });
+
+  it('should reject quads inserted in named graphs', async() => {
+    await expect(run({ quadStreamInsert: new ArrayIterator([
+      DF.quad(DF.namedNode(`${EX}s`), DF.namedNode(`${EX}p`), DF.literal('o'), DF.namedNode(`${EX}g`)),
+    ]) })).rejects.toThrow('HDT files only have a default graph');
+  });
+
+  it.each([
+    [ 'all graphs', 'ALL', 0 ],
+    [ 'the default graph', DF.defaultGraph(), 0 ],
+    [ 'named graphs', 'NAMED', 12 ],
+  ])('should handle deleting %s', async(_name, graphs, remaining) => {
+    await run({ deleteGraphs: { graphs, requireExistence: true, dropGraphs: true }});
+    await expect(datasetQuads()).resolves.toHaveLength(remaining);
+  });
+
+  it('should create graphs without changes', async() => {
+    await run({ createGraphs: { graphs: [ DF.namedNode(`${EX}g`) ], requireNonExistence: true }});
+    await expect(datasetQuads()).resolves.toHaveLength(12);
   });
 });
 

@@ -51,6 +51,17 @@ Since HDT files are read-only by design, each update rewrites the whole file, an
 which takes time linear in the size of the file.
 HDT files only have a default graph, so quads cannot be inserted in named graphs.
 
+For data that is updated often, a directory with an updatable dataset of hdt.js can be used instead,
+of which updates only write their changes, and which can be created from an existing HDT file:
+
+```bash
+$ node -e "require('hdt-js').HdtDataset.import('datasets/dataset', 'datasets/dataset.hdt')"
+$ comunica-sparql-hdt hdt@datasets/dataset "INSERT DATA { <ex:s> <ex:p> <ex:o> }"
+```
+
+Updates of a dataset are durable once they finish, and multiple processes, such as the workers of an endpoint,
+can query and update the same dataset.
+
 Show the help with all options:
 
 ```bash

@@ -2,10 +2,16 @@
 
 [![npm version](https://badge.fury.io/js/%40comunica%2Factor-rdf-update-quads-hdt.svg)](https://www.npmjs.com/package/@comunica/actor-rdf-update-quads-hdt)
 
-An [RDF Update Quads](https://github.com/comunica/comunica/tree/master/packages/bus-rdf-update-quads) actor that updates local [HDT files](https://www.rdfhdt.org/),
+An [RDF Update Quads](https://github.com/comunica/comunica/tree/master/packages/bus-rdf-update-quads) actor that updates local [HDT files](https://www.rdfhdt.org/)
+and local directories with an updatable dataset of HDT files,
 via [hdt.js](https://github.com/rubensworks/hdt.js).
 
-Since HDT files are read-only by design, each update rewrites the whole file,
+A dataset only writes the changes of an update: the positions of deleted triples, and a small HDT file of inserted triples,
+which are merged with other files later on, so that updates take milliseconds instead of rewriting all data.
+Updates of a dataset are durable once they finish, and multiple processes, such as workers of an endpoint,
+can update the same dataset, as configured by the `isolation` parameter.
+
+A single HDT file is read-only by design, so each update rewrites the whole file,
 by merging it with the deleted and inserted quads.
 The new file replaces the old one once it is complete,
 and an index next to the file (`<file>.index.v1-1` or `<file>.index`) is regenerated if it exists.
@@ -50,3 +56,8 @@ After installing, this package can be added to your engine's configuration as fo
 ### Config Parameters
 
 * `mediatorHttpInvalidate`: A mediator over the [HTTP Invalidate bus](https://github.com/comunica/comunica/tree/master/packages/bus-http-invalidate), via which cached sources of updated files are invalidated.
+* `isolation`: How updates of datasets in multiple processes are isolated from each other, defaults to `serializable`.
+  With `serializable`, an update holds the lock of the dataset while its quads are determined and committed,
+  so that updates with `WHERE` clauses behave as if they ran one after another.
+  With `snapshot`, updates run in parallel, and only retry their commit if another update committed first,
+  which is equally correct for updates without `WHERE` clauses, such as `INSERT DATA`.

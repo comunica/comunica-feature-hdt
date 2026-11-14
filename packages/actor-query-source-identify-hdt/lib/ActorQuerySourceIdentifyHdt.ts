@@ -13,12 +13,14 @@ import type { IActorTest, TestResult } from '@comunica/core';
 import { ActionContext, failTest, passTestVoid } from '@comunica/core';
 import type { ComunicaDataFactory, IActionContext } from '@comunica/types';
 import { BindingsFactory } from '@comunica/utils-bindings-factory';
-import { HdtDocument } from 'hdt-js';
+import { HdtDataset, HdtDatasetSource, HdtDocument } from 'hdt-js';
 
 /**
  * A comunica HDT Query Source Identify Actor.
  *
  * HDT files can be local files, or remote files that are read via HTTP Range requests.
+ * Local directories with an updatable dataset of hdt.js are queried as well,
+ * of which generations that other processes commit are picked up before queries.
  * They are queried via the extended RDF/JS source interface of hdt.js.
  */
 export class ActorQuerySourceIdentifyHdt extends ActorQuerySourceIdentify {
@@ -57,10 +59,8 @@ export class ActorQuerySourceIdentifyHdt extends ActorQuerySourceIdentify {
   public async run(action: IActionQuerySourceIdentify): Promise<IActorQuerySourceIdentifyOutput> {
     const dataFactory = action.context.getSafe(KeysInitQuery.dataFactory);
     const value = <string> action.querySourceUnidentified.value;
-    const document = await this.openDocument(value, dataFactory, action.context);
-    this.documents.push(new WeakRef(document));
     const source = new QuerySourceRdfJs(
-      document,
+      await this.openSource(value, dataFactory, action.context),
       dataFactory,
       await BindingsFactory.create(this.mediatorMergeBindingsContext, action.context, dataFactory),
     );
@@ -72,6 +72,23 @@ export class ActorQuerySourceIdentifyHdt extends ActorQuerySourceIdentify {
         context: action.querySourceUnidentified.context ?? new ActionContext(),
       },
     };
+  }
+
+  /**
+   * Open a dataset in a local directory, or an HDT document.
+   */
+  protected async openSource(
+    value: string,
+    dataFactory: ComunicaDataFactory,
+    context: IActionContext,
+  ): Promise<HdtDocument | HdtDatasetSource> {
+    if (!/^https?:\/\//u.test(value) && await HdtDataset.exists(value)) {
+      // Datasets are shared with the update actor, and stay open
+      return new HdtDatasetSource(await HdtDataset.openShared(value, { document: { dataFactory }}));
+    }
+    const document = await this.openDocument(value, dataFactory, context);
+    this.documents.push(new WeakRef(document));
+    return document;
   }
 
   /**
