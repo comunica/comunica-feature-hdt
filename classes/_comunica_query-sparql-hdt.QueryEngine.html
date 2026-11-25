@@ -14,14 +14,14 @@
 <section class="tsd-panel tsd-comment">
 <div class="tsd-comment tsd-typography"><p>A Comunica SPARQL query engine.</p>
 </div></section>
-<section class="tsd-panel tsd-hierarchy" data-refl="503">
+<section class="tsd-panel tsd-hierarchy" data-refl="515">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-signature-type">QueryEngineBase</span>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">QueryEngine</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/comunica/comunica-feature-hdt/blob/6a33fed4558ef1b3eaab25d8e33ad26b8bc42b8a/engines/query-sparql-hdt/lib/QueryEngine.ts#L10">engines/query-sparql-hdt/lib/QueryEngine.ts:10</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/comunica/comunica-feature-hdt/blob/bc7451ad3280baf03a3b51fa38f6e0aaa7289a5f/engines/query-sparql-hdt/lib/QueryEngine.ts#L10">engines/query-sparql-hdt/lib/QueryEngine.ts:10</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -37,6 +37,7 @@
 <a href="#getresultmediatypeformats" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Result<wbr/>Media<wbr/>Type<wbr/>Formats</span></a>
 <a href="#getresultmediatypes" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Result<wbr/>Media<wbr/>Types</span></a>
 <a href="#invalidatehttpcache" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>invalidate<wbr/>Http<wbr/>Cache</span></a>
+<a href="#parserdf" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>parse<wbr/>Rdf</span></a>
 <a href="#query" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query</span></a>
 <a href="#querybindings" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Bindings</span></a>
 <a href="#queryboolean" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Boolean</span></a>
@@ -45,6 +46,8 @@
 <a href="#queryquads" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Quads</span></a>
 <a href="#queryvoid" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Void</span></a>
 <a href="#resulttostring" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>result<wbr/>To<wbr/>String</span></a>
+<a href="#updatequads" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>update<wbr/>Quads</span></a>
+<a href="#warmup" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>warmup</span></a>
 <a href="#finaltointernalresult" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>final<wbr/>To<wbr/>Internal<wbr/>Result</span></a>
 <a href="#internaltofinalresult" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>internal<wbr/>To<wbr/>Final<wbr/>Result</span></a>
 </div></section></div></details></section></section>
@@ -64,7 +67,7 @@
 <h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">QueryEngine</a></h4><aside class="tsd-sources">
 <p>Overrides QueryEngineBase.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/comunica/comunica-feature-hdt/blob/6a33fed4558ef1b3eaab25d8e33ad26b8bc42b8a/engines/query-sparql-hdt/lib/QueryEngine.ts#L11">engines/query-sparql-hdt/lib/QueryEngine.ts:11</a></li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in <a href="https://github.com/comunica/comunica-feature-hdt/blob/bc7451ad3280baf03a3b51fa38f6e0aaa7289a5f/engines/query-sparql-hdt/lib/QueryEngine.ts#L11">engines/query-sparql-hdt/lib/QueryEngine.ts:11</a></li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -114,7 +117,7 @@ the query output or explanation.</p>
 <aside class="tsd-sources">
 <p>Inherited from QueryEngineBase.getResultMediaTypeFormats</p>
 <ul>
-<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:50</li></ul></aside></div></li></ul></section>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:74</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
 <h3 class="tsd-anchor-link" id="getresultmediatypes"><span>get<wbr/>Result<wbr/>Media<wbr/>Types</span><a href="#getresultmediatypes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited tsd-is-external">
@@ -131,7 +134,7 @@ the query output or explanation.</p>
 <aside class="tsd-sources">
 <p>Inherited from QueryEngineBase.getResultMediaTypes</p>
 <ul>
-<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:45</li></ul></aside></div></li></ul></section>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:69</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
 <h3 class="tsd-anchor-link" id="invalidatehttpcache"><span>invalidate<wbr/>Http<wbr/>Cache</span><a href="#invalidatehttpcache" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited tsd-is-external">
@@ -154,7 +157,29 @@ If no page URL is given, then all pages will be invalidated.</p>
 <aside class="tsd-sources">
 <p>Inherited from QueryEngineBase.invalidateHttpCache</p>
 <ul>
-<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:66</li></ul></aside></div></li></ul></section>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:90</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
+<h3 class="tsd-anchor-link" id="parserdf"><span>parse<wbr/>Rdf</span><a href="#parserdf" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited tsd-is-external">
+<li class="tsd-is-inherited tsd-is-external">
+<div class="tsd-signature tsd-anchor-link" id="parserdf-1"><span class="tsd-kind-call-signature">parseRdf</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">stream</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadableStream</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IRdfParseOptions</span> <span class="tsd-signature-symbol">&amp;</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">QueryAlgebraContext</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Stream</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Quad</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><a href="#parserdf-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Parse a stream of RDF with the parsers of this engine.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">stream</span>: <span class="tsd-signature-type">ReadableStream</span></span>
+<div class="tsd-comment tsd-typography"><p>A text stream in an RDF serialization.</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">options</span>: <span class="tsd-signature-type">IRdfParseOptions</span> <span class="tsd-signature-symbol">&amp;</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">QueryAlgebraContext</span><span class="tsd-signature-symbol">&gt;</span></span>
+<div class="tsd-comment tsd-typography"><p>The content type of the stream, and optional parsing and context options.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Stream</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Quad</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A promise resolving to a stream of the parsed quads.</p>
+<aside class="tsd-sources">
+<p>Inherited from QueryEngineBase.parseRdf</p>
+<ul>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:54</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
 <h3 class="tsd-anchor-link" id="query"><span>query</span><a href="#query" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited tsd-is-external">
@@ -357,7 +382,54 @@ Algebra objects must not contain blank nodes. They should be converted to variab
 <aside class="tsd-sources">
 <p>Inherited from QueryEngineBase.resultToString</p>
 <ul>
-<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:58</li></ul></aside></div></li></ul></section>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:82</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
+<h3 class="tsd-anchor-link" id="updatequads"><span>update<wbr/>Quads</span><a href="#updatequads" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited tsd-is-external">
+<li class="tsd-is-inherited tsd-is-external">
+<div class="tsd-signature tsd-anchor-link" id="updatequads-1"><span class="tsd-kind-call-signature">updateQuads</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">update</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IQuadUpdate</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">context</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">QueryAlgebraContext</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#updatequads-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Update the destination with the given quads and graphs, without serializing them into an update query.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">update</span>: <span class="tsd-signature-type">IQuadUpdate</span></span>
+<div class="tsd-comment tsd-typography"><p>The quads to insert and delete, and the graphs to delete and create.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">context</span>: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">QueryAlgebraContext</span><span class="tsd-signature-symbol">&gt;</span></span>
+<div class="tsd-comment tsd-typography"><p>A context, which determines the destination in the same way as for update queries.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A promise that resolves when the destination has been updated.</p>
+<aside class="tsd-sources">
+<p>Inherited from QueryEngineBase.updateQuads</p>
+<ul>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:47</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
+<h3 class="tsd-anchor-link" id="warmup"><span>warmup</span><a href="#warmup" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited tsd-is-external">
+<li class="tsd-is-inherited tsd-is-external">
+<div class="tsd-signature tsd-anchor-link" id="warmup-1"><span class="tsd-kind-call-signature">warmup</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">context</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">QueryStringContext</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IWarmupOptionsBounded</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IWarmupResult</span><span class="tsd-signature-symbol">&gt;</span><a href="#warmup-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Warm up this engine by executing queries over the sources in the given context,
+so that the just-in-time compiler has optimized the engine before it handles actual queries.
+The warm-up does not modify the sources.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">context</span>: <span class="tsd-signature-type">QueryStringContext</span></span>
+<div class="tsd-comment tsd-typography"><p>A context, which determines the sources in the same way as for queries.</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">options</span>: <span class="tsd-signature-type">IWarmupOptionsBounded</span></span>
+<div class="tsd-comment tsd-typography"><p>The maximum number of query executions and duration, and a signal to stop early.
+At least one of them is required.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IWarmupResult</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A promise resolving to the number of query executions.</p>
+<aside class="tsd-sources">
+<p>Inherited from QueryEngineBase.warmup</p>
+<ul>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:64</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
 <h3 class="tsd-anchor-link" id="finaltointernalresult"><code class="tsd-tag">Static</code><span>final<wbr/>To<wbr/>Internal<wbr/>Result</span><a href="#finaltointernalresult" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited tsd-is-external">
@@ -375,7 +447,7 @@ Algebra objects must not contain blank nodes. They should be converted to variab
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IQueryOperationResult</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Inherited from QueryEngineBase.finalToInternalResult</p>
 <ul>
-<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:76</li></ul></aside></div></li></ul></section>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:100</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external">
 <h3 class="tsd-anchor-link" id="internaltofinalresult"><code class="tsd-tag">Static</code><span>internal<wbr/>To<wbr/>Final<wbr/>Result</span><a href="#internaltofinalresult" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited tsd-is-external">
@@ -393,7 +465,7 @@ Algebra objects must not contain blank nodes. They should be converted to variab
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">QueryType</span></h4><aside class="tsd-sources">
 <p>Inherited from QueryEngineBase.internalToFinalResult</p>
 <ul>
-<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:71</li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in node_modules/@comunica/actor-init-query/lib/QueryEngineBase.d.ts:95</li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -412,7 +484,7 @@ Algebra objects must not contain blank nodes. They should be converted to variab
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary>
 <div><a href="#constructor"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
-<div><a href="#explain" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>explain</span></a><a href="#getresultmediatypeformats" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Result<wbr/>Media<wbr/>Type<wbr/>Formats</span></a><a href="#getresultmediatypes" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Result<wbr/>Media<wbr/>Types</span></a><a href="#invalidatehttpcache" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>invalidate<wbr/>Http<wbr/>Cache</span></a><a href="#query" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query</span></a><a href="#querybindings" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Bindings</span></a><a href="#queryboolean" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Boolean</span></a><a href="#queryoftype" class="tsd-is-protected tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Of<wbr/>Type</span></a><a href="#queryorexplain" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Or<wbr/>Explain</span></a><a href="#queryquads" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Quads</span></a><a href="#queryvoid" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Void</span></a><a href="#resulttostring" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>result<wbr/>To<wbr/>String</span></a><a href="#finaltointernalresult" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>final<wbr/>To<wbr/>Internal<wbr/>Result</span></a><a href="#internaltofinalresult" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>internal<wbr/>To<wbr/>Final<wbr/>Result</span></a></div></details></div></details></div>
+<div><a href="#explain" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>explain</span></a><a href="#getresultmediatypeformats" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Result<wbr/>Media<wbr/>Type<wbr/>Formats</span></a><a href="#getresultmediatypes" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Result<wbr/>Media<wbr/>Types</span></a><a href="#invalidatehttpcache" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>invalidate<wbr/>Http<wbr/>Cache</span></a><a href="#parserdf" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>parse<wbr/>Rdf</span></a><a href="#query" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query</span></a><a href="#querybindings" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Bindings</span></a><a href="#queryboolean" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Boolean</span></a><a href="#queryoftype" class="tsd-is-protected tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Of<wbr/>Type</span></a><a href="#queryorexplain" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Or<wbr/>Explain</span></a><a href="#queryquads" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Quads</span></a><a href="#queryvoid" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>query<wbr/>Void</span></a><a href="#resulttostring" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>result<wbr/>To<wbr/>String</span></a><a href="#updatequads" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>update<wbr/>Quads</span></a><a href="#warmup" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>warmup</span></a><a href="#finaltointernalresult" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>final<wbr/>To<wbr/>Internal<wbr/>Result</span></a><a href="#internaltofinalresult" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>internal<wbr/>To<wbr/>Final<wbr/>Result</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html">Comunica HDT</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
